@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS vets (
-  id SERIAL PRIMARY Key,
+  id SERIAL PRIMARY KEY,
   first_name varchar(30),
   last_name varchar(30)
 );
@@ -38,8 +38,8 @@ CREATE TABLE IF NOT EXISTS pets (
   id SERIAL PRIMARY KEY,
   name varchar(30),
   birth_date DATE,
-  type_id integer(4) NOT NULL,
-  owner_id integer(4) NOT NULL,
+  type_id integer,
+  owner_id integer,
   FOREIGN KEY (owner_id) REFERENCES owners(id),
   FOREIGN KEY (type_id) REFERENCES types(id)
 );
@@ -47,7 +47,7 @@ CREATE INDEX IF NOT EXISTS idx_pets_name ON pets (name);
 
 CREATE TABLE IF NOT EXISTS visits (
   id SERIAL PRIMARY KEY,
-  pet_id integer(4) NOT NULL,
+  pet_id integer,
   visit_date DATE,
   description varchar(255),
   FOREIGN KEY (pet_id) REFERENCES pets(id)
