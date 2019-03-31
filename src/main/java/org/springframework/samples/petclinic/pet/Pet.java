@@ -1,6 +1,6 @@
 package org.springframework.samples.petclinic.pet;
 
-import org.springframework.data.annotation.Id;
+//import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -10,9 +10,9 @@ import java.time.LocalDate;
 @Table(name="Pets")
 public class Pet {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name="Id")
-    private int id;
+    private long id;
 
     @Column(name="Take_in_date")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
@@ -42,7 +42,7 @@ public class Pet {
     @Column(name="Diseases")
     private String diseases;
 
-    public int getId(){return this.id;}
+    public long getId(){return this.id;}
 
     public LocalDate getTakeInDate(){return this.takeInDate;}
     public void setTakeInDate(LocalDate takeInDate){this.takeInDate=takeInDate;}

@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,8 +34,9 @@ public class User {
     @DateTimeFormat(pattern="dd-MM-yyyy")
     private LocalDate lastChanged;
 
+    @ElementCollection(targetClass = java.lang.Integer.class)
     @Column(name="Matched_pets_ids")
-    private List<Integer> matchedPetsIds;   //sorted best matches to worst matches | QESTION: Where should I put sorting implementation?
+    private List<Integer> matchedPetsIds= new ArrayList<>();   //sorted best->worst | Gdzie będzie implementacja sortowania?
 
     public int getId(){ return this.id; }
 
