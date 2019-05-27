@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/resources/style/style.css" type="text/css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- axios.js -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <title>Psomocnik</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top" role="navigation">
+    <ul class="nav navbar-nav">
+        <li class="nav-item nav-brand"><a class="nav-link" href="main.html">Logo</a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="main.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="ourPets.html">Nasze zwierzaki</a></li>
+        <li class="nav-item"><a class="nav-link" href="form.html">Znajdź tego jedynego</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Kontakt</a></li>
+    </ul>
+    <ul class="nav navbar-nav ml-auto">
+        <li class="nav-item"><a class="nav-link" href="login.html">Zaloguj</a></li>
+        <li class="nav-item"><a class="nav-link" href="register.html">Zarejestruj</a></li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Zarządzaj</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="managePets.html">Zwierzęta</a>
+                <a class="dropdown-item" href="manageUsers.html">Użytkownicy</a>
+            </div>
+        </li>
+    </ul>
+</nav>
+
+<div class="container-fluid" style="margin-top:50px;">
+    <div class="col-12 text-center">
+        <h1 class="display-3">Edytuj zwierzę</h1>
+    </div>
+
+    <form id="pet">
+        <table class="table">
+            <thead class="thead-dark">
+            <tr class="text-center">
+                <th>
+                    Imię
+                </th>
+                <th>
+                    Data przyjęcia
+                </th>
+                <th>
+                    Gatunek
+                </th>
+                <th>
+                    Płeć
+                </th>
+                <th>
+                    Wiek
+                </th>
+                <th>
+                    Może mieszkać z innymi psami
+                </th>
+                <th>
+                    Może mieszkać z innymi kotami
+                </th>
+                <th>
+                    Może mieszkać z dziećmi
+                </th>
+                <th>
+                    Aktywność (skala 1-10)
+                </th>
+                <th>
+                    Choroby
+                </th>
+            </tr>
+            </thead>
+            <tbody class="bg-psomocnik">
+            <tr class="text-center">
+                <td id="name">
+                    {{[pet.name}}
+                </td>
+                <td id="date">
+                    09-04-2019
+                </td>
+                <td id="species">
+                    {{pet.species}}
+                </td>
+                <td id="sex">
+                    {{pet.sex}}
+                </td>
+                <td id="age">
+                    {{pet.age}}
+                </td>
+                <td id="canLiveWithOtherDogs">
+                    {{pet.canLiveWithOtherDogs}}
+                </td>
+                <td id="canLiveWithOtherCats">
+                    {{pet.canLiveWithOtherCats}}
+                </td>
+                <td id="canLiveWithKids">
+                    {{pet.canLiveWithKids}}
+                </td>
+                <td id="activity">
+                    {{pet.activity}}
+                </td>
+                <td id="dieases">
+                    {{pet.diseases}}
+                </td>
+            </tr>
+            <tr class="text-center">
+                <td>
+                    <button type="button" class="btn btn-psomocnik" data-toggle="modal" data-target="#editModal"
+                            onclick="getId('name')">
+                        Edytuj
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-psomocnik" data-toggle="modal" data-target="#editModal"
+                            onclick="getId('date')">
+                        Edytuj
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-psomocnik" data-toggle="modal" data-target="#editModal"
+                            onclick="getId('species')">
+                        Edytuj
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-psomocnik" data-toggle="modal" data-target="#editModal"
+                            onclick="getId('sex')">
+                        Edytuj
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-psomocnik" data-toggle="modal" data-target="#editModal"
+                            onclick="getId('age')">
+                        Edytuj
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-psomocnik" data-toggle="modal" data-target="#editModal"
+                            onclick="getId('canLiveWithOtherDogs')">
+                        Edytuj
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-psomocnik" data-toggle="modal" data-target="#editModal"
+                            onclick="getId('canLiveWithOtherCats')">
+                        Edytuj
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-psomocnik" data-toggle="modal" data-target="#editModal"
+                            onclick="getId('canLiveWithChildren')">
+                        Edytuj
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-psomocnik" data-toggle="modal" data-target="#editModal"
+                            onclick="getId('activity')">
+                        Edytuj
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-psomocnik" data-toggle="modal" data-target="#editModal"
+                            onclick="getId('diseases')">
+                        Edytuj
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="col-12 text-center">
+            <button type="button" class="btn btn-psomocnik btn-lg" data-toggle="modal" data-target="#submitModal">
+                Zatwierdź
+            </button>
+        </div>
+        <!-------------------------------------submitModal--------------------------------------->
+        <div class="modal fade" id="submitModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body text-center">
+                        <h4>Zatwierdzić zmiany?</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-6 text-center">
+                            <button type="submit" class="btn btn-psomocnik" data-dismiss="modal">Ok
+                            </button>
+                        </div>
+                        <div class="col-6 text-center">
+                            <button type="submit" class="btn btn-psomocnik" data-dismiss="modal">Anuluj</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!------------------------------------- editModal------------------------------------------>
+<div class="modal fade" id="editModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Wprowadź zmianę</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="editInput">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-psomocnik" data-dismiss="modal" onclick="editValue()">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var id=0;
+
+    function getId(value){
+        id=value;
+    }
+
+    function editValue(){
+       var newValue=document.getElementById("editInput").value;
+       setValue(newValue);
+    }
+
+    function setValue(newValue){
+        document.getElementById(id).innerHTML=newValue;
+    }
+
+    var app=new Vue({
+
+     el: '#pet',
+        data:{
+            pet:'',
+            elementId:'',
+            updatedPet:{
+            }
+        },
+        mounted(){
+           this.getPet();
+        },
+        methods:{
+            getPet(){
+                axios.get('/pets/'+this.getPetId()).then(function(response){this.pet=response.data;}.bind(this));
+            },
+             getPetId(){
+                var splitted = window.location.href.split('/');
+                return splitted[splitted.length-1];
+            }
+    });
+</script>
+</body>
+</html>
+

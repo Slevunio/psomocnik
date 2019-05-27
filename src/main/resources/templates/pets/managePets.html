@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/resources/style/style.css" type="text/css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- axios.js -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <title>Psomocnik</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top" role="navigation">
+    <ul class="nav navbar-nav">
+        <li class="nav-item nav-brand"><a class="nav-link" href="main.html">Logo</a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="main">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="ourPets">Nasze zwierzaki</a></li>
+        <li class="nav-item"><a class="nav-link" href="form">Znajdź tego jedynego</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact">Kontakt</a></li>
+    </ul>
+    <ul class="nav navbar-nav ml-auto">
+        <li class="nav-item"><a class="nav-link" href="login">Zaloguj</a></li>
+        <li class="nav-item"><a class="nav-link" href="register">Zarejestruj</a></li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Zarządzaj</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="managePets">Zwierzęta</a>
+                <a class="dropdown-item" href="manageUsers">Użytkownicy</a>
+            </div>
+        </li>
+    </ul>
+</nav>
+
+<div class="container-fluid" style="margin-top:50px;">
+    <div class="col-12 text-center">
+        <h1 class="display-3">Zarządzaj zwierzętami</h1>
+    </div>
+    <div class="container" id="pets">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nazwa</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr :id="pet.id" v-for="pet in pets">
+                <td>{{pet.id}}</td>
+                <td>{{pet.name}}</td>
+                <td><a class="btn btn-psomocnik" :href="'editPet/'+pet.id">Edytuj</a></td>
+                <td>
+                    <button type="button" class="btn btn-psomocnik" data-toggle="modal" data-target="#deleteModal"
+                            v-on:click.capture="setId(pet.id)">Usuń
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-psomocnik btn-lg" href="addPet">Dodaj</a>
+        <div class="modal fade" id="deleteModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body text-center">
+                        <h4>Usunąć?</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-6 text-center">
+                            <button type="button" class="btn btn-psomocnik" data-dismiss="modal"
+                                    v-on:click.capture="deletePet()">Ok
+                            </button>
+                        </div>
+                        <div class="col-6 text-center">
+                            <button type="button" class="btn btn-psomocnik" data-dismiss="modal">Anuluj</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var app=new Vue({
+        el: '#pets',
+        data:{
+            pets:[],
+            id: ""
+        },
+        mounted(){
+            this.readPets()
+        },
+        methods:{
+            readPets(){
+                axios.get("/pets").then(function(response){
+                    this.pets=response.data;
+                }.bind(this));
+            },
+            setId(id){
+                this.id=id;
+            },
+            deletePet(){
+                axios.delete('/pets/'+this.id).then(function(response){document.location.replace("/managePets")});
+            }
+        }
+    });
+
+
+
+</script>
+</body>
+</html>
+

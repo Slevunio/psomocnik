@@ -59,13 +59,43 @@
       <scope>test</scope>
     </dependency>
 
-<dependency>
+      <!-- Selenium dependency -->
+      <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-java</artifactId>
+          <version>3.141.59</version>
+          <scope>test</scope>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+      <dependency>
+          <groupId>org.testng</groupId>
+          <artifactId>testng</artifactId>
+          <version>6.14.3</version>
+          <scope>test</scope>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
+      <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-all</artifactId>
+          <version>1.10.19</version>
+          <scope>test</scope>
+      </dependency>
+
+
+      <!-- Databases - Uses HSQL by default -->
+      <dependency>
+          <groupId>org.hsqldb</groupId>
+          <artifactId>hsqldb</artifactId>
+          <scope>runtime</scope>
+      </dependency>
+      <!--Postgresql dependency-->
+      <dependency>
           <groupId>org.postgresql</groupId>
           <artifactId>postgresql</artifactId>
           <version>42.1.1</version>
       </dependency>
 <!-- https://mvnrepository.com/artifact/com.google.cloud.sql/postgres-socket-factory -->
-<dependency>
+<!--<dependency>
     <groupId>com.google.cloud.sql</groupId>
     <artifactId>postgres-socket-factory</artifactId>
     <version>1.0.11</version>
@@ -78,14 +108,14 @@
       <type>pom</type>
       <scope>import</scope>
     </dependency>
-
+-->
 	<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-gcp-starter-sql-postgresql -->
-	<dependency>
+      <!--<dependency>
     	  <groupId>org.springframework.cloud</groupId>
     	  <artifactId>spring-cloud-gcp-starter-sql-postgresql</artifactId>
     	  <version>1.1.1.RELEASE</version>
 	</dependency>
-
+-->
 	<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
 	<dependency>
 		<groupId>org.springframework</groupId>
@@ -131,6 +161,7 @@
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
     </dependency>
+
   </dependencies>
 
   <build>
@@ -198,7 +229,7 @@
         </configuration>
       </plugin>
 
-      <plugin>
+      <!--<plugin>
         <groupId>ro.isdc.wro4j</groupId>
         <artifactId>wro4j-maven-plugin</artifactId>
         <version>${wro4j.version}</version>
@@ -213,8 +244,6 @@
         <configuration>
           <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
           <cssDestinationFolder>${project.build.directory}/classes/static/resources/css</cssDestinationFolder>
-          <wroFile>${basedir}/src/main/wro/wro.xml</wroFile>
-          <extraConfigFile>${basedir}/src/main/wro/wro.properties</extraConfigFile>
           <contextFolder>${basedir}/src/main/less</contextFolder>
         </configuration>
         <dependencies>
@@ -229,7 +258,7 @@
             <version>${mockito.version}</version>
           </dependency>
         </dependencies>
-      </plugin>
+      </plugin>-->
 	<plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
