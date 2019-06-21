@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/header::header('Register')"></head>
+<body>
+<div th:replace="fragments/navbar::navbar"></div>
+<div class="container-fluid" style="margin-top:50px;" id="registration">
+    <div class="container" style="margin-top:25px;">
+        <div class="col-12 text-center">
+            <h1 class="display-3">Strona rejestracji</h1>
+        </div>
+        <div class="col-5">
+            <form @submit.prevent="register()">
+                <input-text type="text" label="Nazwa użytkownika" name="registerUsername" placeholder="Wprowadź nazwę użytkownika" v-model="username"></input-text>
+                <input-text type="email" label="Adres email" name="registerEmail" placeholder="Wprowadź adres email" v-model="email"></input-text>
+                <input-text type="password" label="Hasło" name="registerPassword" placeholder="Wprowadź hasło" v-model="password"></input-text>
+                <input-text type="password" label="Potwierdź hasło" name="registerPasswordConfirm" placeholder="Potwierdź hasło" v-model="passwordConfirm"></input-text>
+                <div class="col text-center">
+                    <button type="submit" btn class="btn-submit btn-lg btn-psomocnik">Rejestruj</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" src="/resources/javascript/components.js"></script>
+<!--<script type="text/javascript" src="/resources/javascript/registerUser.js"></script>-->
+<script>
+var app = new Vue({
+                el: '#registration',
+
+                data:{
+                    username: '',
+                    email:'',
+                    role:'user',
+                    password: '',
+                    passwordConfirm: ''
+                },
+                methods: {
+                    register(){
+                        if(this.password !== this.passwordConfirm){
+                            alert("Passwords do not match");
+                            return;
+                        }
+                        axios.post("/register",{
+                           username:this.username,
+                           email:this.email,
+                           role:this.role,
+                           password:this.password
+                           }).then(function(response){document.location.replace("/manageUsers")});
+                    }
+                }
+});
+</script>
+</body>
+</html>

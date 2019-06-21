@@ -13,34 +13,39 @@ import java.util.List;
 @Service
 public class UserService {
     @Autowired
-   private UserRepository userRepository;
+    private UserRepository userRepository;
 
-    UserService(){
+
+    UserService() {
 
     }
+
     public List<User> readUsers() {
-            List<User> users = new ArrayList<>();
-            userRepository.findAll().forEach(users::add);
-            return users;
+        List<User> users = new ArrayList<>();
+        userRepository.findAll().forEach(users::add);
+        return users;
     }
+
     public User readUser(Long id) {
-            return userRepository.findById(id).get();
+        return userRepository.findById(id).get();
     }
-    public User updateUser(Long id,User user){
-        User userToUpdate=userRepository.findById(id).get();
-        userToUpdate.setUserName(user.getUserName());
+
+    public User updateUser(Long id, User user) {
+        User userToUpdate = userRepository.findById(id).get();
+        userToUpdate.setUsername(user.getUsername());
         userToUpdate.setEmail(user.getEmail());
-        userToUpdate.setType(user.getType());
+        userToUpdate.setRole(user.getRole());
         userToUpdate.setLastChanged(new Date());
         userRepository.save(userToUpdate);
         return userToUpdate;
     }
-    public User createUser(User user){
-            User createdUser = new User(user.getUserName(), user.getType(), user.getEmail());
-            userRepository.save(createdUser);
-            return createdUser;
+
+    public User createUser(User user) {
+        User createdUser = new User(user.getUsername(), user.getEmail(), user.getRole());
+        return userRepository.save(createdUser);
     }
-    public String deleteUser(Long id){
+
+    public String deleteUser(Long id) {
         userRepository.deleteById(id);
         return "User deleted!";
     }

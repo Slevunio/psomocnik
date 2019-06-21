@@ -5,7 +5,8 @@ CREATE TABLE users (
   id INTEGER IDENTITY PRIMARY KEY,
   user_name VARCHAR(30),
   email  VARCHAR(30),
-  user_type VARCHAR(30),
+  password VARCHAR(30),
+  user_role VARCHAR(30),
   created TIMESTAMP,
   last_changed TIMESTAMP
 );

@@ -10,6 +10,8 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pl.psomocnik.api.UserController;
 import pl.psomocnik.model.User;
+
+import java.util.Arrays;
 /*
 * test integracyjny do spring-boot
 * */
@@ -28,7 +30,7 @@ public class UserControllerIT extends AbstractTestNGSpringContextTests {
 
     @BeforeTest
     void createUser(){
-        user=new User((long)2,"Adam","admin","adam@email.com");
+        user=new User((long)2,"Adam", "adam@email.com","password", "user");
     }
 
     @Test

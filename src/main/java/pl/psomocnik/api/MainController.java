@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 class MainController {
 
+
     @GetMapping("/manageUsers")
     public String manageUsers() {
         return "users/manageUsers";
@@ -22,6 +23,15 @@ class MainController {
         return "users/editUser";
     }
 
+    @GetMapping("/login")
+    public String login(){return "users/login";}
+
+    @GetMapping("/register")
+    public String register(){return "users/register";}
+
+    @GetMapping("/welcome/{id}")
+    public String welcome(){return "users/welcome";}
+
     @GetMapping("/managePets")
     public String managePets(){
         return "pets/managePets";
@@ -34,5 +44,7 @@ class MainController {
 
     @GetMapping("/editPet/{id}")
     public String editPet(){return "pets/editPet";}
+
+
 }
 

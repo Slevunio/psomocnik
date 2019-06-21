@@ -2,11 +2,12 @@ package pl.psomocnik.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -14,72 +15,82 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id; //Long
-
-    @Column(name = "user_type")
-    private String type;     //0=registered user; 1=moderator; 2=admin //w string enum
+    private Long id;
 
     @Column(name = "user_name")
-    private String userName;
+    private String username;
+
+    @JsonIgnore
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "email")
     private String email;
+
+    @Column(name="user_role")
+    private String role;
 
     @Column(name = "created")
     private Date created;
 
     @Column(name = "last_changed")
     private Date lastChanged;
+
+    //string pass
 /*
     @ElementCollection(targetClass = java.lang.Integer.class)
     @Column(name = "matched_pets_ids")
     private List<Integer> matchedPetsIds = new ArrayList<>();   //sorted best->worst | Gdzie będzie implementacja sortowania?
 */
 
-   public User(String userName, String type, String email){
-       this.userName=userName;
-       this.type=type;
-       this.email=email;
-       this.created=new Date();
-       this.lastChanged=new Date();
-   }
-    public User(Long id, String userName, String type, String email){
-        this.id=id;
-        this.userName=userName;
-        this.type=type;
-        this.email=email;
-        this.created=new Date();
-        this.lastChanged=new Date();
+    public User(String username, String email, String role) {
+        this.username = username;
+        this.email = email;
+        this.role = role;
+        this.created = new Date();
+        this.lastChanged = new Date();
     }
-   public User(){}
+
+    public User(Long id, String username, String email, String password, String role){
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.created = new Date();
+        this.lastChanged = new Date();
+    }
+
+    public User(){};
+
     public Long getId() {
         return this.id;
     }
 
-    public void setType(String type) {
-        this.type = type;
+
+    public String getPassword() {
+        return password;
     }
 
-    public String getType() {
-        return this.type;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    public String getUserName() {
-        return this.userName;
+    public String getRole() {
+        return this.role;
     }
 
-    /*public void setPassword(String password){
-       this.password=password;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getPassword(){
-       return this.password;
+    public String getUsername() {
+        return this.username;
     }
-*/
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -89,8 +100,8 @@ public class User {
     }
 
     public String getCreated() {
-       SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-       return simpleDateFormat.format(this.created);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return simpleDateFormat.format(this.created);
     }
 
     public void setLastChanged(Date lastChanged) {
@@ -98,8 +109,8 @@ public class User {
     }
 
     public String getLastChanged() {
-       SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-       return simpleDateFormat.format(this.lastChanged);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return simpleDateFormat.format(this.lastChanged);
     }
 
    /* public void setMatchedPetsIds(List<Integer> matchedPetsIds) {

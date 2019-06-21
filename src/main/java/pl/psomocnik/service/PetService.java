@@ -29,4 +29,28 @@ public class PetService {
     public void createPet(Pet pet){
         petRepository.save(pet);
     }
+    public Pet updatePet(Long id, Pet pet){
+        Pet petToUpdate=readPet(id);
+        if(!pet.getName().equals(""))
+            petToUpdate.setName(pet.getName());
+        if(pet.getTakeInDate()!=null)
+            petToUpdate.setTakeInDate(pet.getTakeInDate());
+        if(!pet.getSpecies().equals(""))
+            petToUpdate.setSpecies(pet.getSpecies());
+        if(!pet.getSex().equals(""))
+            petToUpdate.setSex(pet.getSex());
+        if(pet.getAge()!=null)
+            petToUpdate.setAge(pet.getAge());
+        if(!pet.getCanLiveWithOtherDogs().equals(""))
+            petToUpdate.setCanLiveWithOtherDogs(pet.getCanLiveWithOtherDogs());
+        if(!pet.getCanLiveWithOtherCats().equals(""))
+            petToUpdate.setCanLiveWithOtherCats(pet.getCanLiveWithOtherCats());
+        if(!pet.getCanLiveWithKids().equals(""))
+            petToUpdate.setCanLiveWithKids(pet.getCanLiveWithKids());
+        if(pet.getActivity()!=null)
+            petToUpdate.setActivity(pet.getActivity());
+        if(!pet.getDiseases().equals(""))
+            petToUpdate.setDiseases(pet.getDiseases());
+        return petRepository.save(petToUpdate);
+    }
 }

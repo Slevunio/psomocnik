@@ -1,123 +1,36 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/resources/style/style.css" type="text/css">
-
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-    <!-- Vue.js -->
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
-    <!-- axios.js -->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
-    <title>Psomocnik</title>
-</head>
+<head th:replace="fragments/header::header('Add pet')"></head>
 <body>
+<script src="/resources/javascript/components.js" type="text/javascript"></script>
 
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top" role="navigation">
-    <ul class="nav navbar-nav">
-        <li class="nav-item nav-brand"><a class="nav-link" href="main.html">Logo</a></li>
-    </ul>
-    <ul class="nav navbar-nav">
-        <li class="nav-item"><a class="nav-link" href="main.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="ourPets.html">Nasze zwierzaki</a></li>
-        <li class="nav-item"><a class="nav-link" href="form.html">Znajdź tego jedynego</a></li>
-        <li class="nav-item"><a class="nav-link" href="contact.html">Kontakt</a></li>
-    </ul>
-    <ul class="nav navbar-nav ml-auto">
-        <li class="nav-item"><a class="nav-link" href="login.html">Zaloguj</a></li>
-        <li class="nav-item"><a class="nav-link" href="register.html">Zarejestruj</a></li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Zarządzaj</a>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="managePets.html">Zwierzęta</a>
-                <a class="dropdown-item" href="manageUsers.html">Użytkownicy</a>
-            </div>
-        </li>
-    </ul>
-</nav>
-
+<div th:replace="fragments/navbar::navbar"></div>
 <div class="container-fluid" style="margin-top:50px;">
     <div class="col-12 text-center">
         <h1 class="display-3">Dodaj zwierzę</h1>
     </div>
     <div class="container">
         <form id="pet" @submit.prevent="createPet()">
-            <div class="form-group">
-                <label for="name"><h5>Imię</h5></label>
-                <input type="text" class="form-control" id="name" v-model="name"
-                       placeholder="Wprowadź imię zwierzęcia">
-            </div>
-            <h5>Gatunek</h5>
-            <div class="form-check-inline">
-                <input type="radio" class="form-check-input" name="species" value="dog" v-model="species">Pies
-            </div>
-            <div class="form-check-inline">
-                <input type="radio" class="form-check-input" name="species" value="cat" v-model="species">Kot
-            </div>
 
-            <h5>Płeć</h5>
-            <div class="form-check-inline">
-                <input type="radio" class="form-check-input" name="sex" value="male" v-model="sex">Męska
-            </div>
-            <div class="form-check-inline">
-                <input type="radio" class="form-check-input" name="sex" value="female" v-model="sex">Żeńska
-            </div>
-            <div class="form-group">
-                <label for="age"><h5>Wiek</h5></label>
-                <input type="number" class="form-control" id="age" v-model="age"
-                       placeholder="Wprowadź wiek zwierzęcia">
-            </div>
-            <h5>Czy może mieszkać z innymi psami?</h5>
-            <div class="form-check-inline">
-                <input type="radio" class="form-check-input" name="canLiveWithOtherDogs"
-                      value="yes" v-model="canLiveWithOtherDogs">Tak
-            </div>
-            <div class="form-check-inline">
-                <input type="radio" class="form-check-input" name="canLiveWithOtherDogs"
-                       value="no" v-model="canLiveWithOtherDogs">Nie
-            </div>
-            <h5>Czy może mieszkać z innymi kotami?</h5>
-            <div class="form-check-inline">
-                <input type="radio" class="form-check-input" name="canLiveWithOtherCats"
-                       value="yes" v-model="canLiveWithOtherCats">Tak
-            </div>
-            <div class="form-check-inline">
-                <input type="radio" class="form-check-input" name="canLiveWithOtherCats"
-                       value="no" v-model="canLiveWithOtherCats">Nie
-            </div>
-            <h5>Czy może mieszkać z dziećmi?</h5>
-            <div class="form-check-inline">
-                <input type="radio" class="form-check-input" name="canLiveWithKids"
-                       value="yes" v-model="canLiveWithKids">Tak
-            </div>
-            <div class="form-check-inline">
-                <input type="radio" class="form-check-input" name="canLiveWithKids"
-                       value="no" v-model="canLiveWithKids">Nie
-            </div>
-            <div class="form-group">
-                <label for="activity"><h5>Aktywność w skali 1-10 (1-nie aktywny, 10-bardzo aktywny)</h5></label>
-                <input type="number" class="form-control" id="activity" v-model="activity">
-            </div>
+            <input-text type="text" name="name" label="Imię" v-model="name"
+                        placeholder="Wprowadź imię zwierzęcia"></input-text>
+            <input-text type="datetime-local" name="takeInDate" label="Data przyjęcia" v-model="takeInDate"
+                        placeholder="yyyy-mm-dd --:--"></input-text>
+            <input-radio label="Gatunek" name="species" :values="['Pies', 'Kot']" v-model="species"></input-radio><!--TODO: values as list-->
+            <input-radio label="Płeć" name="sex" :values="['Męska', 'Żeńska']" v-model="sex"></input-radio>
+            <input-text type="number" label="Wiek" name="age" placeholder="Wprowadź wiek zwierzęcia"
+                        v-model="age"></input-text>
+            <input-radio label="Czy może mieszkać z innymi psami" name="canLiveWithOtherDogs" :values="['Tak', 'Nie']" v-model="canLiveWithOtherDogs"></input-radio>
+            <input-radio label="Czy może mieszkać z innymi Kotami" name="canLiveWithOtherCats" :values="['Tak', 'Nie']" v-model="canLiveWithOtherCats"></input-radio>
+            <input-radio label="Czy może mieszkać z dziećmi" name="canLiveWithKids" :values="['Tak', 'Nie']" v-model="canLiveWithKids"></input-radio>
+            <input-text type="number" label="Aktywność w skali 1-10 (1 - nieaktywny, 10 - bardzo aktywny)"
+                        name="activity" placeholder="Aktywność" v-model="activity"></input-text>
             <h5>Choroby</h5>
-            <div class="form-group" id="disease0">
-                <label for="diseases"></label>
-                <input type="text" class="form-control" id="diseases" v-model="diseases"
-                       value="none" placeholder="Wprowadź chorobę">
+            <div id="petDiseases" v-for="disease in diseasesArray">
+                <input-text type="text" placeholder="Wprowadź chorobę" v-model="disease.value"></input-text>
             </div>
             <div class="col">
-                <button type="button" id="addDisButton" class="btn btn-psomocnik btn-lg" v-on:click="addDis()">+
+                <button type="button" id="addDisButton" class="btn btn-psomocnik btn-lg" v-on:click="addDis()">Dodaj chorobę
                 </button>
             </div>
             <br>
@@ -134,42 +47,7 @@
         </form>
     </div>
 </div>
-<script>
-    var app=new Vue({
-        el: '#pet',
-        data:{
-
-            name:'',
-            species:'',
-            sex:'',
-            age:'',
-            canLiveWithOtherDogs:'',
-            canLiveWithOtherCats:'',
-            canLiveWithKids:'',
-            activity:'',
-            diseases:'',
-            diseaseNr:0
-        },
-        methods:{
-            addDis(){
-                var p=document.getElementById('disease'+this.diseaseNr);
-                this.diseaseNr++;
-                var newElement=document.createElement('div');
-                newElement.setAttribute('class', 'form-group');
-                newElement.setAttribute('id', 'disease'+this.diseaseNr);
-                var html='<label for="diseases"'+this.diseaseNr+'></label><input type="text" class="form-control" placeholder="Wprowadź nazwę choroby">';
-                newElement.innerHTML=html;
-                p.parentNode.insertBefore(newElement, p.nextSibling);
-            },
-            createPet(){
-                axios.post("/pets",{name:this.name, species:this.species, sex:this.sex, age:this.age, canLiveWithOtherDogs:this.canLiveWithOtherDogs,
-                                    canLiveWithOtherCats:this.canLiveWithOtherCats, canLiveWithKids:this.canLiveWithKids, activity:this.activity,
-                                    diseases:this.diseases}).then(function(response){document.location.replace("/managePets")});
-            },
-        }
-    });
-
-</script>
+<script type="text/javascript" src="/resources/javascript/addPet.js"></script>
 </body>
 </html>
 

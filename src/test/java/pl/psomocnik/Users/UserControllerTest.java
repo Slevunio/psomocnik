@@ -14,6 +14,7 @@ import pl.psomocnik.service.UserService;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UserControllerTest {
@@ -32,8 +33,8 @@ public class UserControllerTest {
     @Test
     public void shouldReturnUsers() {
 
-        User user1 = new User((long) 1, "User1", "admin", "user1@email.com");
-        User user2 = new User((long) 2, "User2", "user", "user2@email.com");
+        User user1 = new User((long) 1, "User1", "user1@email.com", "password", "user");
+        User user2 = new User((long) 2, "User2", "user2@email.com", "password", "user");
         List<User> expected = new ArrayList<>();
         expected.add(user1);
         expected.add(user2);
@@ -47,7 +48,7 @@ public class UserControllerTest {
 
     @Test
     public void shouldReturnUserCreated() {
-        User expected = new User((long) 1, "Adam", "admin", "adam@email.com");
+        User expected = new User((long) 1, "Adam", "adam@email.com", "password", "user");
         Mockito.when(userController.createUser(expected)).thenReturn(expected);
 
         User returned = userController.createUser(expected);
@@ -57,7 +58,7 @@ public class UserControllerTest {
 
     @Test
     public void shouldReturnUser() {
-        User expected = new User((long) 1, "Adam", "admin", "adam@email.com");
+        User expected = new User((long) 1, "Adam", "adam@email.com", "password", "user");
         Mockito.when(userController.readUser((long) 1)).thenReturn(expected);
 
         User returned = userController.readUser((long) 1);
@@ -66,7 +67,8 @@ public class UserControllerTest {
 
     @Test
     public void shouldReturnUserUpdated() {
-        User expected = new User((long) 1, "Adam", "admin", "adam@email.com");
+        User expected = new User((long) 1, "Adam", "adam@email.com", "password", "user");
+        ;
         Mockito.when(userController.updateUser((long) 1, expected)).thenReturn(expected);
 
         User returned = userController.updateUser((long) 1, expected);

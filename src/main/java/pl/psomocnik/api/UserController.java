@@ -18,7 +18,7 @@ public class UserController{
         return userService.readUsers();
     }
 
-    @GetMapping(value="/users/{id}")
+    @GetMapping(value={"/users/{id}","/welcome/{id}"})
     public User readUser(@PathVariable Long id){
         return userService.readUser(id);
     }
@@ -30,6 +30,11 @@ public class UserController{
 
     @PostMapping(value="/users")
     public User createUser(@RequestBody User user){
+        return userService.createUser(user);
+    }
+
+    @PostMapping(value="/register")
+    public User registerUser(@RequestBody User user){
         return userService.createUser(user);
     }
 

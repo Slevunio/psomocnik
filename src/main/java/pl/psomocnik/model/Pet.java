@@ -1,11 +1,11 @@
 package pl.psomocnik.model;
 
-//import org.springframework.data.annotation.Id;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -19,10 +19,10 @@ public class Pet {
     @Column(name="pet_name")
     private String name;
 
-   /* @Column(name = "take_in_date")
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate takeInDate;
-*/
+    @Column(name = "take_in_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
+    private LocalDateTime takeInDate;
+
     @Column(name = "species")
     private String species;
 
@@ -47,6 +47,9 @@ public class Pet {
     @Column(name = "diseases")
     private String diseases;
 
+
+            //dodac osobna encje pictures
+
     public Long getId() {
         return this.id;
     }
@@ -55,14 +58,14 @@ public class Pet {
 
     public void setName(String name){this.name=name;}
 
-  /*  public LocalDate getTakeInDate() {
+    public LocalDateTime getTakeInDate() {
         return this.takeInDate;
     }
 
-    public void setTakeInDate(LocalDate takeInDate) {
+    public void setTakeInDate(LocalDateTime takeInDate) {
         this.takeInDate = takeInDate;
     }
-*/
+
     public String getSex() {
         return this.sex;
     }
