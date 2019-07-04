@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+
 @RequestMapping("/api")
+
 public class PetController {
     @Autowired
     PetService petService;
@@ -18,15 +20,18 @@ public class PetController {
         return petService.readPets();
     }
 
+
     @GetMapping(value="/pet/{id}")
     public Pet readPet(@PathVariable Long id){
         return petService.readPet(id);
     }
 
+
     @PostMapping(value="/pet")
     public void createPet(@RequestBody Pet pet){
         petService.createPet(pet);
     }
+
 
     @PutMapping(value="/pet/{id}")
     public Pet updatePet(@PathVariable Long id, @RequestBody Pet pet){

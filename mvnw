@@ -9,6 +9,7 @@
 # with the License.  You may obtain a copy of the License at
 #
 #    https://www.apache.org/licenses/LICENSE-2.0
+
 #
 # Unless required by applicable law or agreed to in writing,
 # software distributed under the License is distributed on an
@@ -54,6 +55,7 @@ case "`uname`" in
   CYGWIN*) cygwin=true ;;
   MINGW*) mingw=true;;
   Darwin*) darwin=true
+  
     # Use /usr/libexec/java_home if available, otherwise fall back to /Library/Java/Home
     # See https://developer.apple.com/library/mac/qa/qa1170/_index.html
     if [ -z "$JAVA_HOME" ]; then
@@ -108,7 +110,9 @@ if $cygwin ; then
     CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
 fi
 
+
 # For Mingw, ensure paths are in UNIX format before anything is touched
+
 if $mingw ; then
   [ -n "$M2_HOME" ] &&
     M2_HOME="`(cd "$M2_HOME"; pwd)`"
@@ -174,16 +178,19 @@ find_maven_basedir() {
 
   basedir="$1"
   wdir="$1"
+
   while [ "$wdir" != '/' ] ; do
     if [ -d "$wdir"/.mvn ] ; then
       basedir=$wdir
       break
     fi
+
     # workaround for JBEAP-8937 (on Solaris 10/Sparc)
     if [ -d "${wdir}" ]; then
       wdir=`cd "$wdir/.."; pwd`
     fi
     # end of workaround
+
   done
   echo "${basedir}"
 }
@@ -277,10 +284,13 @@ if $cygwin; then
     MAVEN_PROJECTBASEDIR=`cygpath --path --windows "$MAVEN_PROJECTBASEDIR"`
 fi
 
+
 WRAPPER_LAUNCHER=org.apache.maven.wrapper.MavenWrapperMain
 
 exec "$JAVACMD" \
   $MAVEN_OPTS \
   -classpath "$MAVEN_PROJECTBASEDIR/.mvn/wrapper/maven-wrapper.jar" \
   "-Dmaven.home=${M2_HOME}" "-Dmaven.multiModuleProjectDirectory=${MAVEN_PROJECTBASEDIR}" \
+
   ${WRAPPER_LAUNCHER} $MAVEN_CONFIG "$@"
+

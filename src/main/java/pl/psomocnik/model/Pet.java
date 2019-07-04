@@ -47,6 +47,7 @@ public class Pet {
 
     //dodac osobna encje pictures
 
+
     public Long getId() {
         return this.id;
     }

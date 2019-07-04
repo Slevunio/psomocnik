@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -120,4 +121,3 @@ public class User {
     */
 
 }
-

@@ -1,11 +1,9 @@
 package pl.psomocnik.service;
 
-
 import pl.psomocnik.dao.UserRepository;
 import pl.psomocnik.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,4 +48,3 @@ public class UserService {
         return "User deleted!";
     }
 }
-
