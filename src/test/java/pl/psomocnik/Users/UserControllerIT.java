@@ -1,4 +1,4 @@
-package pl.psomocnik.Users;
+/*package pl.psomocnik.Users;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +11,11 @@ import org.testng.annotations.Test;
 import pl.psomocnik.api.UserController;
 import pl.psomocnik.model.User;
 
-import java.util.Arrays;
+import java.util.Arrays;*/
 /*
 * test integracyjny do spring-boot
 * */
-
+/*
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class UserControllerIT extends AbstractTestNGSpringContextTests {
@@ -23,7 +23,8 @@ public class UserControllerIT extends AbstractTestNGSpringContextTests {
 * Zapytaj o przechowywanie zdjec w bd!
 *
 * */
-    @Autowired
+
+ /*   @Autowired
     UserController userController;
 
     User user;
@@ -45,3 +46,4 @@ public class UserControllerIT extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(message,"User deleted!", "Deleting user failed!");
     }
 }
+*/

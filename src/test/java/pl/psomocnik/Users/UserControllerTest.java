@@ -1,4 +1,4 @@
-package pl.psomocnik.Users;
+/*package pl.psomocnik.Users;
 
 
 import org.mockito.InjectMocks;
@@ -16,6 +16,9 @@ import pl.psomocnik.service.UserService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+*/
+/*
 
 public class UserControllerTest {
 
@@ -85,4 +88,6 @@ public class UserControllerTest {
     }
 
 }
+
+*/
 
