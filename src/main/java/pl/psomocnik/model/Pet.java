@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "Pets")
@@ -41,12 +42,27 @@ public class Pet {
     @Column(name = "activity")
     private Integer activity;     // activity in scale 1-10
 
-    @Column(name = "diseases")
-    private String diseases;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="pet_diseases", joinColumns=@JoinColumn(name="pet_id"), inverseJoinColumns = @JoinColumn(name="disease_id"))
+    private List<Disease> diseases;
 
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
+    private List<Photo> photos;
 
-    //dodac osobna encje pictures
-
+    Pet(){}
+    public Pet(String name, LocalDateTime takeInDate, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, List<Disease> diseases, List<Photo> photos) {
+        this.name = name;
+        this.takeInDate = takeInDate;
+        this.species = species;
+        this.sex = sex;
+        this.age = age;
+        this.canLiveWithOtherDogs = canLiveWithOtherDogs;
+        this.canLiveWithOtherCats = canLiveWithOtherCats;
+        this.canLiveWithKids = canLiveWithKids;
+        this.activity = activity;
+        this.diseases = diseases;
+        this.photos = photos;
+    }
 
     public Long getId() {
         return this.id;
@@ -112,14 +128,13 @@ public class Pet {
         this.activity = activity;
     }
 
-    public String getDiseases() {
-        return this.diseases;
+    public List<Disease> getDiseases() {
+        return diseases;
     }
 
-    public void setDiseases(String diseases) {
+    public void setDiseases(List<Disease> diseases) {
         this.diseases = diseases;
     }
-
 
     public String getSpecies() {
         return this.species;
@@ -127,6 +142,14 @@ public class Pet {
 
     public void setSpecies(String species) {
         this.species = species;
+    }
+
+    /*public List<Photo> getPhotos() {
+        return photos;
+    }*/
+
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
     }
 
 }
