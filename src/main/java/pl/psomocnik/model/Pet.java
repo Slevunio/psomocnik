@@ -46,11 +46,8 @@ public class Pet {
     @JoinTable(name="pet_diseases", joinColumns=@JoinColumn(name="pet_id"), inverseJoinColumns = @JoinColumn(name="disease_id"))
     private List<Disease> diseases;
 
-    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
-    private List<Photo> photos;
-
     Pet(){}
-    public Pet(String name, LocalDateTime takeInDate, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, List<Disease> diseases, List<Photo> photos) {
+    public Pet(String name, LocalDateTime takeInDate, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, List<Disease> diseases/*, List<Photo> photos*/) {
         this.name = name;
         this.takeInDate = takeInDate;
         this.species = species;
@@ -61,8 +58,9 @@ public class Pet {
         this.canLiveWithKids = canLiveWithKids;
         this.activity = activity;
         this.diseases = diseases;
-        this.photos = photos;
+        //this.photos = photos;
     }
+
 
     public Long getId() {
         return this.id;
@@ -146,10 +144,10 @@ public class Pet {
 
     /*public List<Photo> getPhotos() {
         return photos;
-    }*/
+    }
 
     public void setPhotos(List<Photo> photos) {
         this.photos = photos;
-    }
+    }*/
 
 }

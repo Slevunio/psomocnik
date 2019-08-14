@@ -1,7 +1,6 @@
 package pl.psomocnik.model;
 
-
-import org.springframework.web.multipart.MultipartFile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -21,13 +20,15 @@ public class Photo {
     private String type;
 
     @Lob
-    @Column(name = "data")
+    @Column(name = "photo_data")
     private byte[] data;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="pet_id")
+    @JsonIgnore
     private Pet pet;
 
+    public Photo(){}
     public Photo(String name, String type, byte[] data) {
         this.name = name;
         this.type = type;

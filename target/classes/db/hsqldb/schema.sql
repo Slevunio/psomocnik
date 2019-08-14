@@ -43,9 +43,9 @@ ALTER TABLE pet_diseases ADD CONSTRAINT fk_pet_diseases_diseases FOREIGN KEY (di
 
 CREATE TABLE photos (
     id INTEGER IDENTITY PRIMARY KEY,
-    photo BLOB,
     photo_name varchar(30),
     photo_type varchar(30),
+    photo_data BLOB,
     pet_id INTEGER NOT NULL
 );
 

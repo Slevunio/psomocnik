@@ -1,8 +1,8 @@
 package pl.psomocnik.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartRequest;
+import pl.psomocnik.DTO.PetWithPhotosDTO;
 import pl.psomocnik.model.Disease;
 import pl.psomocnik.model.Photo;
 import pl.psomocnik.service.PetService;
@@ -10,12 +10,14 @@ import pl.psomocnik.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 
@@ -26,13 +28,18 @@ public class PetController {
     PetService petService;
 
     @GetMapping(value = "/pet")
-    public List<Pet> readPets() {
+    public List<PetWithPhotosDTO> readPets() {
         return petService.readPets();
     }
 
+    /*@GetMapping(value = "/photos/{id}")
+    public List<Photo> readPhotosByPetId(Long id){
+        return petService.readPhotosByPetId(id);
+    }*/
+
 
     @GetMapping(value = "/pet/{id}")
-    public Pet readPet(@PathVariable Long id) {
+    public PetWithPhotosDTO readPet(@PathVariable Long id) {
         return petService.readPet(id);
     }
 
@@ -48,8 +55,10 @@ public class PetController {
                           @RequestParam("canLiveWithKids") String canLiveWithKids,
                           @RequestParam("activity") String activity,
                           @RequestParam("diseases") String diseases,
-                          @RequestParam("photos") List<MultipartFile> photos) throws IOException {
-        petService.createPet(new Pet(name, convertDate(takeInDate), species, sex, Integer.valueOf(age), canLiveWithOtherDogs, canLiveWithOtherCats, canLiveWithKids, Integer.valueOf(activity), convertDiseases(diseases), convertPhotos(photos)));
+                          @RequestParam("photos") MultipartFile[] photos) throws IOException {
+        petService.createPet(new Pet(name, convertDate(takeInDate), species,
+                sex, Integer.valueOf(age), canLiveWithOtherDogs,
+                canLiveWithOtherCats, canLiveWithKids, Integer.valueOf(activity), convertDiseases(diseases)/*, convertPhotos(photos)*/), convertPhotos(photos));
     }
 
     @PutMapping(value = "/pet/{id}")
@@ -94,11 +103,11 @@ public class PetController {
         return LocalDateTime.parse(joinedDate, dateTimeFormatter);
     }
 
-    private List<Photo> convertPhotos(List<MultipartFile> multipartFileList) throws IOException {
+    private List<Photo> convertPhotos(MultipartFile[] multipartFileList) throws IOException {
         List<Photo> photos = new ArrayList<>();
-        for (MultipartFile file:multipartFileList
-             ) {
-            photos.add(new Photo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
+
+        for(int i=0 ; i<multipartFileList.length ; i++){
+           photos.add(new Photo(multipartFileList[i].getOriginalFilename(), multipartFileList[i].getContentType(), multipartFileList[i].getBytes()));
         }
         return photos;
     }
