@@ -1,6 +1,6 @@
 package pl.psomocnik.service;
 
-import pl.psomocnik.DTO.PetWithPhotosDTO;
+import pl.psomocnik.DTO.PetDTO;
 import pl.psomocnik.dao.DiseaseRepository;
 import pl.psomocnik.dao.PetRepository;
 import pl.psomocnik.dao.PhotosRepository;
@@ -12,7 +12,6 @@ import pl.psomocnik.model.Photo;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -24,24 +23,19 @@ public class PetService {
     @Autowired
     PhotosRepository photosRepository;
 
-    /*public List<Pet> readPets() {
-        List<Pet> pets = new ArrayList<>();
-        petRepository.findAll().forEach(pets::add);
-        return pets;
-    }*/
-    public List<PetWithPhotosDTO> readPets(){
-        List<PetWithPhotosDTO> petsWithPhotos = new ArrayList<>();
+    public List<PetDTO> readPets(){
+        List<PetDTO> petDTOS = new ArrayList<>();
         List<Pet> pets = new ArrayList<>();
         petRepository.findAll().forEach(pets::add);
         for (Pet pet:pets
              ) {
-            petsWithPhotos.add(new PetWithPhotosDTO(pet, encodePhotos(readPhotosByPetId(pet.getId()))));
+            petDTOS.add(copyPetToPetDTO(pet));
         }
-        return petsWithPhotos;
+        return petDTOS;
     }
 
-    public PetWithPhotosDTO readPet(Long id) {
-        return new PetWithPhotosDTO(petRepository.findById(id).get(), encodePhotos(readPhotosByPetId(id)));
+    public PetDTO readPet(Long id) {
+        return copyPetToPetDTO(petRepository.findById(id).get());
     }
 
     public void deletePet(Long id) {
@@ -114,12 +108,13 @@ public class PetService {
         return photos;
     }
 
-    public List<String> encodePhotos(List<Photo> photos){
-        List<String> encodedPhotos = new ArrayList<>();
-        for (Photo photo:photos
-             ) {
-            encodedPhotos.add("data:image/png;charset=utf-8;base64,"+Base64.getEncoder().encodeToString(photo.getData()));
-        }
-        return encodedPhotos;
+
+    private PetDTO copyPetToPetDTO(Pet pet){
+        PetDTO petDTO = new PetDTO(pet.getId(), pet.getName(), pet.getTakeInDate(),
+                pet.getSpecies(), pet.getSex(), pet.getAge(),
+                pet.getCanLiveWithOtherDogs(), pet.getCanLiveWithOtherCats(), pet.getCanLiveWithKids(),
+                pet.getActivity(), pet.getDiseases(), readPhotosByPetId(pet.getId()));
+        return petDTO;
     }
+    //stworz petDTO (wszystkie pola tekstowe, obraz jako id zdjecia z bazy)
 }

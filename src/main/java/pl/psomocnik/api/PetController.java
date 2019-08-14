@@ -1,8 +1,7 @@
 package pl.psomocnik.api;
 
-import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.web.multipart.MultipartFile;
-import pl.psomocnik.DTO.PetWithPhotosDTO;
+import pl.psomocnik.DTO.PetDTO;
 import pl.psomocnik.model.Disease;
 import pl.psomocnik.model.Photo;
 import pl.psomocnik.service.PetService;
@@ -10,9 +9,6 @@ import pl.psomocnik.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,7 +24,7 @@ public class PetController {
     PetService petService;
 
     @GetMapping(value = "/pet")
-    public List<PetWithPhotosDTO> readPets() {
+    public List<PetDTO> readPets() {
         return petService.readPets();
     }
 
@@ -39,7 +35,7 @@ public class PetController {
 
 
     @GetMapping(value = "/pet/{id}")
-    public PetWithPhotosDTO readPet(@PathVariable Long id) {
+    public PetDTO readPet(@PathVariable Long id) {
         return petService.readPet(id);
     }
 
