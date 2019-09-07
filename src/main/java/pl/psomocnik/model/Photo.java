@@ -1,6 +1,7 @@
 package pl.psomocnik.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.persistence.*;
 
@@ -24,11 +25,13 @@ public class Photo {
     private byte[] data;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="pet_id")
+    @JoinColumn(name = "pet_id")
     @JsonIgnore
     private Pet pet;
 
-    public Photo(){}
+    public Photo() {
+    }
+
     public Photo(String name, String type, byte[] data) {
         this.name = name;
         this.type = type;
@@ -74,4 +77,5 @@ public class Photo {
     public void setPet(Pet pet) {
         this.pet = pet;
     }
+
 }

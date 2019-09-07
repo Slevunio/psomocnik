@@ -1,15 +1,14 @@
 package pl.psomocnik.DTO;
 
 import pl.psomocnik.model.Disease;
-import pl.psomocnik.model.Photo;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 public class PetDTO {
 
+    public static Double featuresToMatch = 10.0;
     private Long id;
     private String name;
     private LocalDateTime takeInDate;
@@ -21,9 +20,12 @@ public class PetDTO {
     private String canLiveWithKids;
     private Integer activity;     // activity in scale 1-10
     private List<String> diseases;
-    private List<String> photos;
+    private List<Long> photosIds; // lista id
+    private String coat;
+    private String fur;
+    private Double percentageMatchWithUserAccuracy;
 
-    public PetDTO(Long id, String name, LocalDateTime takeInDate, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, List<Disease> diseases, List<Photo> photos) {
+    public PetDTO(Long id, String name, LocalDateTime takeInDate, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, List<Disease> diseases, List<Long> photosIds, String coat, String fur) {
         this.id = id;
         this.name = name;
         this.takeInDate = takeInDate;
@@ -35,7 +37,10 @@ public class PetDTO {
         this.canLiveWithKids = canLiveWithKids;
         this.activity = activity;
         this.diseases = convertDiseases(diseases);
-        this.photos = encodePhotos(photos);
+        this.photosIds = photosIds;
+        this.coat = coat;
+        this.fur = fur;
+        this.percentageMatchWithUserAccuracy = 0.0;
     }
 
     public Long getId() {
@@ -126,28 +131,44 @@ public class PetDTO {
         this.diseases = diseases;
     }
 
-    public List<String> getPhotos() {
-        return photos;
+    public List<Long> getPhotosIds() {
+        return photosIds;
     }
 
-    public void setPhotos(List<String> photos) {
-        this.photos = photos;
+    public void setPhotosIds(List<Long> photosIds) {
+        this.photosIds = photosIds;
     }
 
-    private List<String> convertDiseases(List<Disease> diseases){
+    private List<String> convertDiseases(List<Disease> diseases) {
         List<String> convertedDiseases = new ArrayList<>();
-        for (Disease dis:diseases
-             ) {
+        for (Disease dis : diseases
+        ) {
             convertedDiseases.add(dis.getName());
         }
         return convertedDiseases;
     }
-    public List<String> encodePhotos(List<Photo> photos){
-        List<String> encodedPhotos = new ArrayList<>();
-        for (Photo photo:photos
-        ) {
-            encodedPhotos.add("data:image/png;charset=utf-8;base64,"+ Base64.getEncoder().encodeToString(photo.getData()));
-        }
-        return encodedPhotos;
+
+    public String getCoat() {
+        return coat;
+    }
+
+    public void setCoat(String coat) {
+        this.coat = coat;
+    }
+
+    public String getFur() {
+        return fur;
+    }
+
+    public void setFur(String fur) {
+        this.fur = fur;
+    }
+
+    public Double getPercentageMatchWithUserAccuracy() {
+        return percentageMatchWithUserAccuracy;
+    }
+
+    public void setPercentageMatchWithUserAccuracy(Double percentageMatchWithUserAccuracy) {
+        this.percentageMatchWithUserAccuracy = percentageMatchWithUserAccuracy;
     }
 }

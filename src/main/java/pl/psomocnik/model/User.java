@@ -18,15 +18,15 @@ public class User {
     @Column(name = "user_name")
     private String username;
 
-    @JsonIgnore
     @Column(name = "password")
     private String password;
 
     @Column(name = "email")
     private String email;
 
-    @Column(name="user_role")
-    private String role;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     @Column(name = "created")
     private Date created;
@@ -34,22 +34,14 @@ public class User {
     @Column(name = "last_changed")
     private Date lastChanged;
 
-    //string pass
-/*
-    @ElementCollection(targetClass = java.lang.Integer.class)
-    @Column(name = "matched_pets_ids")
-    private List<Integer> matchedPetsIds = new ArrayList<>();   //sorted best->worst | Gdzie będzie implementacja sortowania?
-*/
-
-    public User(String username, String email, String role) {
+    public User(String username, String email) {
         this.username = username;
         this.email = email;
-        this.role = role;
         this.created = new Date();
         this.lastChanged = new Date();
     }
 
-    public User(Long id, String username, String email, String password, String role){
+    public User(String username, String email, String password, Role role){
         this.username = username;
         this.email = email;
         this.password = password;
@@ -73,14 +65,6 @@ public class User {
         this.password = password;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getRole() {
-        return this.role;
-    }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -97,6 +81,14 @@ public class User {
         return this.email;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public String getCreated() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return simpleDateFormat.format(this.created);
@@ -110,14 +102,5 @@ public class User {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return simpleDateFormat.format(this.lastChanged);
     }
-
-   /* public void setMatchedPetsIds(List<Integer> matchedPetsIds) {
-        this.matchedPetsIds = matchedPetsIds;
-    }
-
-    public List<Integer> getMatchedPetsIds() {
-        return this.matchedPetsIds;
-    }
-    */
 
 }

@@ -1,6 +1,9 @@
 package pl.psomocnik.api;
 
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+import pl.psomocnik.DTO.FindPetFormDTO;
 import pl.psomocnik.DTO.PetDTO;
 import pl.psomocnik.model.Disease;
 import pl.psomocnik.model.Photo;
@@ -50,11 +53,13 @@ public class PetController {
                           @RequestParam("canLiveWithOtherCats") String canLiveWithOtherCats,
                           @RequestParam("canLiveWithKids") String canLiveWithKids,
                           @RequestParam("activity") String activity,
+                          @RequestParam("coat") String coat,
+                          @RequestParam("fur") String fur,
                           @RequestParam("diseases") String diseases,
                           @RequestParam("photos") MultipartFile[] photos) throws IOException {
         petService.createPet(new Pet(name, convertDate(takeInDate), species,
                 sex, Integer.valueOf(age), canLiveWithOtherDogs,
-                canLiveWithOtherCats, canLiveWithKids, Integer.valueOf(activity), convertDiseases(diseases)/*, convertPhotos(photos)*/), convertPhotos(photos));
+                canLiveWithOtherCats, canLiveWithKids, Integer.valueOf(activity), coat, fur, convertDiseases(diseases)), convertPhotos(photos));
     }
 
     @PutMapping(value = "/pet/{id}")
@@ -82,17 +87,37 @@ public class PetController {
         petService.deleteDisease(id);
     }
 
+    @GetMapping(value = "/photos/{id}")
+    public ResponseEntity<Resource> readPhoto(@PathVariable Long id) throws IOException {
+        return petService.readPhotoById(id);
+    }
+
+    @PostMapping(value = "/findPet")
+    public List<PetDTO> findPet(/*@RequestParam("species") String species,
+                                @RequestParam("sex") String sex,
+                                @RequestParam("age") String age,
+                                @RequestParam("canLiveWithOtherDogs") String canLiveWithOtherDogs,
+                                @RequestParam("canLiveWithOtherCats") String canLiveWithOtherCats,
+                                @RequestParam("canLiveWithKids") String canLiveWithKids,
+                                @RequestParam("activity") String activity,
+                                @RequestParam("coat") String coat,
+                                @RequestParam("fur") String fur,
+                                @RequestParam("diseases") String diseases*/
+                                    @RequestBody FindPetFormDTO findPetFormDTO){
+        return petService.findPet(findPetFormDTO);
+    }
+
     private List<Disease> convertDiseases(String diseasesString) {
         List<Disease> diseases = new ArrayList<>();
         String[] splittedDiseases = diseasesString.split(",");
-        for (int i = 0; i < splittedDiseases.length; i+=2) {
+        for (int i = 0; i < splittedDiseases.length; i += 2) {
             Long id = Long.valueOf(splittedDiseases[i].split(":")[1]);
             diseases.add(petService.readDisease(id));
         }
         return diseases;
     }
 
-    private LocalDateTime convertDate(String dateString){
+    private LocalDateTime convertDate(String dateString) {
         String[] splittedDate = dateString.split("T");
         String joinedDate = String.join(" ", splittedDate);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -102,8 +127,8 @@ public class PetController {
     private List<Photo> convertPhotos(MultipartFile[] multipartFileList) throws IOException {
         List<Photo> photos = new ArrayList<>();
 
-        for(int i=0 ; i<multipartFileList.length ; i++){
-           photos.add(new Photo(multipartFileList[i].getOriginalFilename(), multipartFileList[i].getContentType(), multipartFileList[i].getBytes()));
+        for (int i = 0; i < multipartFileList.length; i++) {
+            photos.add(new Photo(multipartFileList[i].getOriginalFilename(), multipartFileList[i].getContentType(), multipartFileList[i].getBytes()));
         }
         return photos;
     }

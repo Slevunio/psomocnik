@@ -14,7 +14,7 @@ public class Pet {
     @Column(name = "id")
     private Long id;
 
-    @Column(name="pet_name")
+    @Column(name = "pet_name")
     private String name;
 
     @Column(name = "take_in_date")
@@ -43,11 +43,19 @@ public class Pet {
     private Integer activity;     // activity in scale 1-10
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name="pet_diseases", joinColumns=@JoinColumn(name="pet_id"), inverseJoinColumns = @JoinColumn(name="disease_id"))
+    @JoinTable(name = "pet_diseases", joinColumns = @JoinColumn(name = "pet_id"), inverseJoinColumns = @JoinColumn(name = "disease_id"))
     private List<Disease> diseases;
 
-    Pet(){}
-    public Pet(String name, LocalDateTime takeInDate, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, List<Disease> diseases/*, List<Photo> photos*/) {
+    @Column(name = "coat")
+    private String coat;
+
+    @Column(name = "fur")
+    private String fur;
+
+    Pet() {
+    }
+
+    public Pet(String name, LocalDateTime takeInDate, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, String coat, String fur, List<Disease> diseases/*, List<Photo> photos*/) {
         this.name = name;
         this.takeInDate = takeInDate;
         this.species = species;
@@ -57,6 +65,8 @@ public class Pet {
         this.canLiveWithOtherCats = canLiveWithOtherCats;
         this.canLiveWithKids = canLiveWithKids;
         this.activity = activity;
+        this.coat = coat;
+        this.fur = fur;
         this.diseases = diseases;
         //this.photos = photos;
     }
@@ -66,9 +76,13 @@ public class Pet {
         return this.id;
     }
 
-    public String getName(){return this.name;}
+    public String getName() {
+        return this.name;
+    }
 
-    public void setName(String name){this.name=name;}
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public LocalDateTime getTakeInDate() {
         return this.takeInDate;
@@ -142,12 +156,19 @@ public class Pet {
         this.species = species;
     }
 
-    /*public List<Photo> getPhotos() {
-        return photos;
+    public String getCoat() {
+        return coat;
     }
 
-    public void setPhotos(List<Photo> photos) {
-        this.photos = photos;
-    }*/
+    public void setCoat(String coat) {
+        this.coat = coat;
+    }
 
+    public String getFur() {
+        return fur;
+    }
+
+    public void setFur(String fur) {
+        this.fur = fur;
+    }
 }
