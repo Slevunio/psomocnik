@@ -1,10 +1,11 @@
-package pl.psomocnik.api;
+package pl.psomocnik.controller;
 
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
-import pl.psomocnik.DTO.FindPetFormDTO;
-import pl.psomocnik.DTO.PetDTO;
+import pl.psomocnik.dto.FindPetFormDto;
+import pl.psomocnik.dto.PetDto;
 import pl.psomocnik.model.Disease;
 import pl.psomocnik.model.Photo;
 import pl.psomocnik.service.PetService;
@@ -20,14 +21,14 @@ import java.util.List;
 
 @RestController
 
-@RequestMapping("/api")
+@RequestMapping("/controller")
 
 public class PetController {
     @Autowired
     PetService petService;
 
     @GetMapping(value = "/pet")
-    public List<PetDTO> readPets() {
+    public List<PetDto> readPets() {
         return petService.readPets();
     }
 
@@ -38,13 +39,13 @@ public class PetController {
 
 
     @GetMapping(value = "/pet/{id}")
-    public PetDTO readPet(@PathVariable Long id) {
+    public PetDto readPet(@PathVariable Long id) {
         return petService.readPet(id);
     }
 
 
     @PostMapping(value = "/pet")
-    public void createPet(@RequestParam("name") String name,
+    public ResponseEntity createPet(@RequestParam("name") String name,
                           @RequestParam("takeInDate") String takeInDate,
                           @RequestParam("species") String species,
                           @RequestParam("sex") String sex,
@@ -60,6 +61,7 @@ public class PetController {
         petService.createPet(new Pet(name, convertDate(takeInDate), species,
                 sex, Integer.valueOf(age), canLiveWithOtherDogs,
                 canLiveWithOtherCats, canLiveWithKids, Integer.valueOf(activity), coat, fur, convertDiseases(diseases)), convertPhotos(photos));
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping(value = "/pet/{id}")
@@ -93,7 +95,7 @@ public class PetController {
     }
 
     @PostMapping(value = "/findPet")
-    public List<PetDTO> findPet(/*@RequestParam("species") String species,
+    public List<PetDto> findPet(/*@RequestParam("species") String species,
                                 @RequestParam("sex") String sex,
                                 @RequestParam("age") String age,
                                 @RequestParam("canLiveWithOtherDogs") String canLiveWithOtherDogs,
@@ -103,7 +105,7 @@ public class PetController {
                                 @RequestParam("coat") String coat,
                                 @RequestParam("fur") String fur,
                                 @RequestParam("diseases") String diseases*/
-                                    @RequestBody FindPetFormDTO findPetFormDTO){
+                                    @RequestBody FindPetFormDto findPetFormDTO){
         return petService.findPet(findPetFormDTO);
     }
 

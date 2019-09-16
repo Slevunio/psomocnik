@@ -9,5 +9,4 @@ public class PsomocnikApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PsomocnikApplication.class, args);
 	}
-
 }

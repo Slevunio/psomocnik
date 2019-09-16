@@ -1,4 +1,4 @@
-package pl.psomocnik.DTO;
+package pl.psomocnik.dto;
 
 import pl.psomocnik.model.Disease;
 
@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PetDTO {
+public class PetDto {
 
     public static Double featuresToMatch = 10.0;
     private Long id;
@@ -25,7 +25,7 @@ public class PetDTO {
     private String fur;
     private Double percentageMatchWithUserAccuracy;
 
-    public PetDTO(Long id, String name, LocalDateTime takeInDate, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, List<Disease> diseases, List<Long> photosIds, String coat, String fur) {
+    public PetDto(Long id, String name, LocalDateTime takeInDate, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, List<Disease> diseases, List<Long> photosIds, String coat, String fur) {
         this.id = id;
         this.name = name;
         this.takeInDate = takeInDate;

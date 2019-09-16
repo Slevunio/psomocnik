@@ -8,7 +8,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import pl.psomocnik.api.UserController;
+import pl.psomocnik.controller.UserController;
 import pl.psomocnik.model.User;
 
 import java.util.Arrays;*/

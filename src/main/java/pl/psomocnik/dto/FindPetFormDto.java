@@ -1,6 +1,6 @@
-package pl.psomocnik.DTO;
+package pl.psomocnik.dto;
 
-public class FindPetFormDTO {
+public class FindPetFormDto {
     private String species;
     private String sex;
     private String age;
@@ -12,7 +12,7 @@ public class FindPetFormDTO {
     private String fur;
     private String diseases;
 
-    public FindPetFormDTO(String species, String sex, String age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, String activity, String coat, String fur, String diseases) {
+    public FindPetFormDto(String species, String sex, String age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, String activity, String coat, String fur, String diseases) {
         this.species = species;
         this.sex = sex;
         this.age = age;

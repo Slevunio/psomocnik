@@ -1,71 +1,65 @@
 package pl.psomocnik.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import pl.psomocnik.service.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    @Autowired
-    UserDetailsService userDetailsService;
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+
+
+    @Value("${signing-key}")
+    private String signingKey;
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    @Autowired
+    private UserDetailsServiceImpl customUserDetailService;
+
+
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/pet**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/pet").hasAnyAuthority("MODERATOR", "ADMIN")
-                .antMatchers(HttpMethod.PUT, "/api/pet/**").hasAnyAuthority("MODERATOR", "ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/api/pet/**").hasAnyAuthority("MODERATOR", "ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/disease").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/disease").hasAnyAuthority("MODERATOR", "ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/api/disease").hasAnyAuthority("MODERATOR", "ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/photos**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/findPet").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/user**").hasAnyAuthority("MODERATOR", "ADMIN")
-                .antMatchers(HttpMethod.POST, "/api/user").hasAnyAuthority("MODERATOR", "ADMIN")
-                .antMatchers(HttpMethod.PUT, "/api/user/**").hasAuthority("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/api/user/**").hasAuthority("ADMIN")
-                .antMatchers(HttpMethod.POST, "/api/register").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/login").permitAll().and()
-                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        // Add a filter to validate the tokens with every request
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(customUserDetailService).passwordEncoder(bCryptPasswordEncoder());
     }
 
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
+    }
 
     @Bean
-    public AuthenticationManager customAuthenticationManager() throws Exception {
-        return authenticationManager();
+    JwtAccessTokenConverter jwtAccessTokenConverter(){
+        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        jwtAccessTokenConverter.setSigningKey(signingKey);
+        return jwtAccessTokenConverter;
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+    @Bean
+    TokenStore tokenStore(){
+        return new JwtTokenStore(jwtAccessTokenConverter());
+    }
+
+    @Bean
+    DefaultTokenServices defaultTokenServices(){
+        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+        defaultTokenServices.setTokenStore(tokenStore());
+        defaultTokenServices.setSupportRefreshToken(true);
+        return defaultTokenServices;
     }
 }

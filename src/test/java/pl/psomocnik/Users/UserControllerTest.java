@@ -8,7 +8,7 @@ import org.mockito.MockitoAnnotations;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pl.psomocnik.api.UserController;
+import pl.psomocnik.controller.UserController;
 import pl.psomocnik.model.User;
 import pl.psomocnik.service.UserService;
 

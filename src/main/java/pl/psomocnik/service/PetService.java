@@ -5,8 +5,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import pl.psomocnik.DTO.FindPetFormDTO;
-import pl.psomocnik.DTO.PetDTO;
+import pl.psomocnik.dto.FindPetFormDto;
+import pl.psomocnik.dto.PetDto;
 import pl.psomocnik.dao.DiseaseRepository;
 import pl.psomocnik.dao.PetRepository;
 import pl.psomocnik.dao.PhotosRepository;
@@ -31,8 +31,8 @@ public class PetService {
     @Autowired
     PhotosRepository photosRepository;
 
-    public List<PetDTO> readPets() {
-        List<PetDTO> petDTOS = new ArrayList<>();
+    public List<PetDto> readPets() {
+        List<PetDto> petDTOS = new ArrayList<>();
         List<Pet> pets = new ArrayList<>();
         petRepository.findAll().forEach(pets::add);
         for (Pet pet : pets
@@ -42,7 +42,7 @@ public class PetService {
         return petDTOS;
     }
 
-    public PetDTO readPet(Long id) {
+    public PetDto readPet(Long id) {
         return copyPetToPetDTO(petRepository.findById(id).get());
     }
 
@@ -92,10 +92,10 @@ public class PetService {
         return null;
     }
 
-    public List<PetDTO> findPet(FindPetFormDTO findPetFormDTO) {
+    public List<PetDto> findPet(FindPetFormDto findPetFormDTO) {
         Integer matchWithUserAccuracy;
-        List<PetDTO> matchedPets = new ArrayList<>();
-        PetDTO petDTO;
+        List<PetDto> matchedPets = new ArrayList<>();
+        PetDto petDTO;
         List<Pet> pets = new ArrayList<>();
         petRepository.findAll().forEach(pets::add);
 
@@ -133,15 +133,15 @@ public class PetService {
                 }
 
                 petDTO = copyPetToPetDTO(pet);
-                petDTO.setPercentageMatchWithUserAccuracy(matchWithUserAccuracy/PetDTO.featuresToMatch*100);
+                petDTO.setPercentageMatchWithUserAccuracy(matchWithUserAccuracy/ PetDto.featuresToMatch*100);
                 matchedPets.add(petDTO);
             }
 
         }
 
-        Collections.sort(matchedPets, new Comparator<PetDTO>() {
+        Collections.sort(matchedPets, new Comparator<PetDto>() {
             @Override
-            public int compare(PetDTO o1, PetDTO o2) {
+            public int compare(PetDto o1, PetDto o2) {
                 return o1.getPercentageMatchWithUserAccuracy() > o2.getPercentageMatchWithUserAccuracy() ? -1 :
                         o1.getPercentageMatchWithUserAccuracy() > o2.getPercentageMatchWithUserAccuracy() ? 1 : 0;
             }
@@ -179,8 +179,8 @@ public class PetService {
     }
 
 
-    private PetDTO copyPetToPetDTO(Pet pet) {
-        PetDTO petDTO = new PetDTO(pet.getId(), pet.getName(), pet.getTakeInDate(),
+    private PetDto copyPetToPetDTO(Pet pet) {
+        PetDto petDTO = new PetDto(pet.getId(), pet.getName(), pet.getTakeInDate(),
                 pet.getSpecies(), pet.getSex(), pet.getAge(),
                 pet.getCanLiveWithOtherDogs(), pet.getCanLiveWithOtherCats(), pet.getCanLiveWithKids(),
                 pet.getActivity(), pet.getDiseases(), readPhotosIdsByPetId(pet.getId()), pet.getCoat(), pet.getFur());
