@@ -19,6 +19,7 @@ public class User {
     private String username;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @Column(name = "email")
@@ -34,6 +35,9 @@ public class User {
     @Column(name = "last_changed")
     private Date lastChanged;
 
+   /* @Column(name = "last_logged_in")
+    private Date lastLoggedIn;*/
+
     public User(String username, String email) {
         this.username = username;
         this.email = email;
@@ -48,9 +52,10 @@ public class User {
         this.role = role;
         this.created = new Date();
         this.lastChanged = new Date();
+       // this.lastLoggedIn = null;
     }
 
-    public User(){};
+    public User(){}
 
     public Long getId() {
         return this.id;
@@ -103,4 +108,12 @@ public class User {
         return simpleDateFormat.format(this.lastChanged);
     }
 
+    /*public String getLastLoggedIn() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return simpleDateFormat.format(this.lastLoggedIn);
+    }
+
+    public void setLastLoggedIn(Date lastLoggedIn) {
+        this.lastLoggedIn = lastLoggedIn;
+    }*/
 }

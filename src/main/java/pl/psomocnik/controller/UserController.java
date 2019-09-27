@@ -5,11 +5,13 @@ import pl.psomocnik.service.UserService;
 import pl.psomocnik.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
 @RestController
-@RequestMapping("/controller")
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
@@ -37,9 +39,9 @@ public class UserController {
         userService.createUser(user);
     }
 
-    @DeleteMapping(path = "/user/{id}")
-    public String deleteUser(@PathVariable Long id) {
-        return userService.deleteUser(id);
+    @DeleteMapping(path = "/user")
+    public String deleteUsers(@RequestParam String ids) {
+        return userService.deleteUsers(convertToArray(ids));
     }
 
     @PostMapping(value = "/register")
@@ -55,5 +57,15 @@ public class UserController {
     @GetMapping(value="/role/{name}")
     public Role readRoleByRoleName(@PathVariable String name){
         return userService.readRoleByRoleName(name);
+    }
+
+    private List<Long> convertToArray(String idsString){
+        List<Long> ids = new ArrayList<>();
+        String [] splitted = idsString.substring(1,idsString.length()-1).split(",");
+        for (String id:splitted
+        ) {
+            ids.add(Long.valueOf(id));
+        }
+        return ids;
     }
 }

@@ -1,9 +1,8 @@
 package pl.psomocnik.model;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,14 +17,16 @@ public class Pet {
     private String name;
 
     @Column(name = "take_in_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
-    private LocalDateTime takeInDate;
+    private Date takeInDate;
+
+    @Column(name = "last_changed")
+    private Date lastChanged;
 
     @Column(name = "species")
     private String species;
 
     @Column(name = "sex")
-    private String sex; //enum
+    private String sex;
 
     @Column(name = "age")
     private Integer age;
@@ -55,9 +56,10 @@ public class Pet {
     Pet() {
     }
 
-    public Pet(String name, LocalDateTime takeInDate, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, String coat, String fur, List<Disease> diseases/*, List<Photo> photos*/) {
+    public Pet(String name, Date takeInDate, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, String coat, String fur, List<Disease> diseases) {
         this.name = name;
         this.takeInDate = takeInDate;
+        this.lastChanged = new Date();
         this.species = species;
         this.sex = sex;
         this.age = age;
@@ -68,7 +70,6 @@ public class Pet {
         this.coat = coat;
         this.fur = fur;
         this.diseases = diseases;
-        //this.photos = photos;
     }
 
 
@@ -84,12 +85,22 @@ public class Pet {
         this.name = name;
     }
 
-    public LocalDateTime getTakeInDate() {
-        return this.takeInDate;
+    public String getTakeInDate() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return simpleDateFormat.format(this.takeInDate);
     }
 
-    public void setTakeInDate(LocalDateTime takeInDate) {
+    public void setTakeInDate(Date takeInDate) {
         this.takeInDate = takeInDate;
+    }
+
+    public String getLastChanged() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return simpleDateFormat.format(this.lastChanged);
+    }
+
+    public void setLastChanged(Date lastChanged) {
+        this.lastChanged = lastChanged;
     }
 
     public String getSex() {

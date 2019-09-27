@@ -57,8 +57,11 @@ public class UserService {
         return userRepository.save(registeredUser);
     }
 
-    public String deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public String deleteUsers(List<Long> ids) {
+        for (Long id:ids
+             ) {
+            userRepository.deleteById(id);
+        }
         return "User deleted!";
     }
 

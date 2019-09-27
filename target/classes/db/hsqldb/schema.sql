@@ -12,7 +12,7 @@ CREATE TABLE users (
   role_id INTEGER,
   password VARCHAR(60),
   created TIMESTAMP,
-  last_changed TIMESTAMP
+  last_changed TIMESTAMP,
 );
 CREATE TABLE roles (
     id INTEGER IDENTITY PRIMARY KEY,
@@ -24,6 +24,7 @@ CREATE TABLE pets (
     id INTEGER IDENTITY PRIMARY KEY,
     pet_name VARCHAR(30),
     take_in_date TIMESTAMP,
+    last_changed TIMESTAMP,
     species VARCHAR(30),
     sex VARCHAR(30),
     age INTEGER,

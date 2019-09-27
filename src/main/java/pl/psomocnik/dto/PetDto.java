@@ -2,7 +2,6 @@ package pl.psomocnik.dto;
 
 import pl.psomocnik.model.Disease;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,24 +10,26 @@ public class PetDto {
     public static Double featuresToMatch = 10.0;
     private Long id;
     private String name;
-    private LocalDateTime takeInDate;
+    private String takeInDate;
+    private String lastChanged;
     private String species;
     private String sex; //enum
     private Integer age;
     private String canLiveWithOtherDogs;
     private String canLiveWithOtherCats;
     private String canLiveWithKids;
-    private Integer activity;     // activity in scale 1-10
+    private Integer activity;
     private List<String> diseases;
-    private List<Long> photosIds; // lista id
+    private List<String> photosUrls;
     private String coat;
     private String fur;
-    private Double percentageMatchWithUserAccuracy;
+    private Double matchWithUserAccuracy;
 
-    public PetDto(Long id, String name, LocalDateTime takeInDate, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, List<Disease> diseases, List<Long> photosIds, String coat, String fur) {
+    public PetDto(Long id, String name, String takeInDate, String lastChanged, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, List<Disease> diseases, List<Long> photosIds, String coat, String fur) {
         this.id = id;
         this.name = name;
         this.takeInDate = takeInDate;
+        this.lastChanged = lastChanged;
         this.species = species;
         this.sex = sex;
         this.age = age;
@@ -37,11 +38,13 @@ public class PetDto {
         this.canLiveWithKids = canLiveWithKids;
         this.activity = activity;
         this.diseases = convertDiseases(diseases);
-        this.photosIds = photosIds;
+        this.photosUrls = convertPhotoUrls(photosIds);
         this.coat = coat;
         this.fur = fur;
-        this.percentageMatchWithUserAccuracy = 0.0;
+        this.matchWithUserAccuracy = 0.0;
     }
+
+
 
     public Long getId() {
         return id;
@@ -59,12 +62,20 @@ public class PetDto {
         this.name = name;
     }
 
-    public LocalDateTime getTakeInDate() {
+    public String getTakeInDate() {
         return takeInDate;
     }
 
-    public void setTakeInDate(LocalDateTime takeInDate) {
+    public void setTakeInDate(String takeInDate) {
         this.takeInDate = takeInDate;
+    }
+
+    public String getLastChanged() {
+        return lastChanged;
+    }
+
+    public void setLastChanged(String lastChanged) {
+        this.lastChanged = lastChanged;
     }
 
     public String getSpecies() {
@@ -131,22 +142,14 @@ public class PetDto {
         this.diseases = diseases;
     }
 
-    public List<Long> getPhotosIds() {
-        return photosIds;
+    public List<String> getPhotosUrls() {
+        return photosUrls;
     }
 
-    public void setPhotosIds(List<Long> photosIds) {
-        this.photosIds = photosIds;
+    public void setPhotosUrls(List<Long> photosIds) {
+        this.photosUrls = convertPhotoUrls(photosIds);
     }
 
-    private List<String> convertDiseases(List<Disease> diseases) {
-        List<String> convertedDiseases = new ArrayList<>();
-        for (Disease dis : diseases
-        ) {
-            convertedDiseases.add(dis.getName());
-        }
-        return convertedDiseases;
-    }
 
     public String getCoat() {
         return coat;
@@ -164,11 +167,30 @@ public class PetDto {
         this.fur = fur;
     }
 
-    public Double getPercentageMatchWithUserAccuracy() {
-        return percentageMatchWithUserAccuracy;
+    public Double getMatchWithUserAccuracy() {
+        return matchWithUserAccuracy;
     }
 
-    public void setPercentageMatchWithUserAccuracy(Double percentageMatchWithUserAccuracy) {
-        this.percentageMatchWithUserAccuracy = percentageMatchWithUserAccuracy;
+    public void setMatchWithUserAccuracy(Double matchWithUserAccuracy) {
+        this.matchWithUserAccuracy = matchWithUserAccuracy;
+    }
+
+    private List<String> convertPhotoUrls(List<Long> photosIds) {
+        List<String> photosUrls = new ArrayList<>();
+        for (Long photoId:photosIds
+        ) {
+            photosUrls.add("/api/photos/"+photoId);
+        }
+        return photosUrls;
+    }
+
+
+    private List<String> convertDiseases(List<Disease> diseases) {
+        List<String> convertedDiseases = new ArrayList<>();
+        for (Disease dis : diseases
+        ) {
+            convertedDiseases.add(dis.getName());
+        }
+        return convertedDiseases;
     }
 }

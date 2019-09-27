@@ -13,15 +13,19 @@ import pl.psomocnik.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Console;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
 
-@RequestMapping("/controller")
+@RequestMapping("/api")
 
 public class PetController {
     @Autowired
@@ -57,7 +61,7 @@ public class PetController {
                           @RequestParam("coat") String coat,
                           @RequestParam("fur") String fur,
                           @RequestParam("diseases") String diseases,
-                          @RequestParam("photos") MultipartFile[] photos) throws IOException {
+                          @RequestParam("photos") MultipartFile[] photos) throws IOException, ParseException {
         petService.createPet(new Pet(name, convertDate(takeInDate), species,
                 sex, Integer.valueOf(age), canLiveWithOtherDogs,
                 canLiveWithOtherCats, canLiveWithKids, Integer.valueOf(activity), coat, fur, convertDiseases(diseases)), convertPhotos(photos));
@@ -69,9 +73,9 @@ public class PetController {
         return petService.updatePet(id, pet);
     }
 
-    @DeleteMapping(value = "/pet/{id}")
-    public void deletePet(@PathVariable Long id) {
-        petService.deletePet(id);
+    @DeleteMapping(value = "/pet")
+    public void  deletePet(@RequestParam String ids) {
+       petService.deletePets(convertToArray(ids));
     }
 
     @GetMapping(value = "/disease")
@@ -95,17 +99,7 @@ public class PetController {
     }
 
     @PostMapping(value = "/findPet")
-    public List<PetDto> findPet(/*@RequestParam("species") String species,
-                                @RequestParam("sex") String sex,
-                                @RequestParam("age") String age,
-                                @RequestParam("canLiveWithOtherDogs") String canLiveWithOtherDogs,
-                                @RequestParam("canLiveWithOtherCats") String canLiveWithOtherCats,
-                                @RequestParam("canLiveWithKids") String canLiveWithKids,
-                                @RequestParam("activity") String activity,
-                                @RequestParam("coat") String coat,
-                                @RequestParam("fur") String fur,
-                                @RequestParam("diseases") String diseases*/
-                                    @RequestBody FindPetFormDto findPetFormDTO){
+    public List<PetDto> findPet(@RequestBody FindPetFormDto findPetFormDTO){
         return petService.findPet(findPetFormDTO);
     }
 
@@ -119,11 +113,10 @@ public class PetController {
         return diseases;
     }
 
-    private LocalDateTime convertDate(String dateString) {
+    private Date convertDate(String dateString) throws ParseException {
         String[] splittedDate = dateString.split("T");
         String joinedDate = String.join(" ", splittedDate);
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return LocalDateTime.parse(joinedDate, dateTimeFormatter);
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(joinedDate);
     }
 
     private List<Photo> convertPhotos(MultipartFile[] multipartFileList) throws IOException {
@@ -133,5 +126,14 @@ public class PetController {
             photos.add(new Photo(multipartFileList[i].getOriginalFilename(), multipartFileList[i].getContentType(), multipartFileList[i].getBytes()));
         }
         return photos;
+    }
+    private List<Long> convertToArray(String idsString){
+        List<Long> ids = new ArrayList<>();
+        String [] splitted = idsString.substring(1,idsString.length()-1).split(",");
+        for (String id:splitted
+             ) {
+            ids.add(Long.valueOf(id));
+        }
+        return ids;
     }
 }

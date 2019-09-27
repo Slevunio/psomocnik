@@ -1,5 +1,6 @@
 package pl.psomocnik.service;
 
+import javassist.bytecode.ByteArray;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -46,14 +47,18 @@ public class PetService {
         return copyPetToPetDTO(petRepository.findById(id).get());
     }
 
-    public void deletePet(Long id) {
-        List<Photo> photos = new ArrayList<>();
-        photos = photosRepository.findByPetId(id);
-        for (Photo photo : photos
+    public void deletePets(List<Long> ids) {
+        List<Pet> pets = new ArrayList<>();
+        for (Long id : ids
         ) {
-            photosRepository.delete(photo);
+            List<Photo> photos = new ArrayList<>();
+            photos = photosRepository.findByPetId(id);
+            for (Photo photo : photos
+            ) {
+                photosRepository.delete(photo);
+            }
+            petRepository.deleteById(id);
         }
-        petRepository.deleteById(id);
     }
 
     public void createPet(Pet pet, List<Photo> photos) throws IOException {
@@ -133,7 +138,7 @@ public class PetService {
                 }
 
                 petDTO = copyPetToPetDTO(pet);
-                petDTO.setPercentageMatchWithUserAccuracy(matchWithUserAccuracy/ PetDto.featuresToMatch*100);
+                petDTO.setMatchWithUserAccuracy(matchWithUserAccuracy / PetDto.featuresToMatch * 100);
                 matchedPets.add(petDTO);
             }
 
@@ -142,8 +147,8 @@ public class PetService {
         Collections.sort(matchedPets, new Comparator<PetDto>() {
             @Override
             public int compare(PetDto o1, PetDto o2) {
-                return o1.getPercentageMatchWithUserAccuracy() > o2.getPercentageMatchWithUserAccuracy() ? -1 :
-                        o1.getPercentageMatchWithUserAccuracy() > o2.getPercentageMatchWithUserAccuracy() ? 1 : 0;
+                return o1.getMatchWithUserAccuracy() > o2.getMatchWithUserAccuracy() ? -1 :
+                        o1.getMatchWithUserAccuracy() > o2.getMatchWithUserAccuracy() ? 1 : 0;
             }
         });
         return matchedPets;
@@ -180,7 +185,7 @@ public class PetService {
 
 
     private PetDto copyPetToPetDTO(Pet pet) {
-        PetDto petDTO = new PetDto(pet.getId(), pet.getName(), pet.getTakeInDate(),
+        PetDto petDTO = new PetDto(pet.getId(), pet.getName(), pet.getTakeInDate(), pet.getLastChanged(),
                 pet.getSpecies(), pet.getSex(), pet.getAge(),
                 pet.getCanLiveWithOtherDogs(), pet.getCanLiveWithOtherCats(), pet.getCanLiveWithKids(),
                 pet.getActivity(), pet.getDiseases(), readPhotosIdsByPetId(pet.getId()), pet.getCoat(), pet.getFur());

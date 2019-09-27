@@ -47,8 +47,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .tokenStore(tokenStore)
                 .accessTokenConverter(jwtAccessTokenConverter)
                 .tokenEnhancer(tokenEnhancerChain)
-                .pathMapping("/oauth/token", "/controller/oauth/token")
-                .pathMapping("/oauth/authorize", "/controller/oauth/authorize");
+                .pathMapping("/oauth/token", "/api/oauth/token")
+                .pathMapping("/oauth/authorize", "/api/oauth/authorize");
     }
 
     @Override
@@ -61,5 +61,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .accessTokenValiditySeconds(60*60*24*7)
                 .secret(bCryptPasswordEncoder.encode(clientSecret));
     }
+
 
 }
