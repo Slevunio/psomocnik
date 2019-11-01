@@ -33,7 +33,9 @@ CREATE TABLE pets (
     can_live_with_kids VARCHAR(30),
     activity INTEGER,
     coat varchar(30),
-    fur varchar(30)
+    fur varchar(30),
+    is_ill varchar(30),
+    additional_notes longvarchar
 );
 
 CREATE TABLE diseases (

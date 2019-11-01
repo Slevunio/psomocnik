@@ -50,21 +50,23 @@ public class PetController {
 
     @PostMapping(value = "/pet")
     public ResponseEntity createPet(@RequestParam("name") String name,
-                          @RequestParam("takeInDate") String takeInDate,
-                          @RequestParam("species") String species,
-                          @RequestParam("sex") String sex,
-                          @RequestParam("age") String age,
-                          @RequestParam("canLiveWithOtherDogs") String canLiveWithOtherDogs,
-                          @RequestParam("canLiveWithOtherCats") String canLiveWithOtherCats,
-                          @RequestParam("canLiveWithKids") String canLiveWithKids,
-                          @RequestParam("activity") String activity,
-                          @RequestParam("coat") String coat,
-                          @RequestParam("fur") String fur,
-                          @RequestParam("diseases") String diseases,
-                          @RequestParam("photos") MultipartFile[] photos) throws IOException, ParseException {
+                                    @RequestParam("takeInDate") String takeInDate,
+                                    @RequestParam("species") String species,
+                                    @RequestParam("sex") String sex,
+                                    @RequestParam("age") String age,
+                                    @RequestParam("canLiveWithOtherDogs") String canLiveWithOtherDogs,
+                                    @RequestParam("canLiveWithOtherCats") String canLiveWithOtherCats,
+                                    @RequestParam("canLiveWithKids") String canLiveWithKids,
+                                    @RequestParam("activity") String activity,
+                                    @RequestParam("coat") String coat,
+                                    @RequestParam("fur") String fur,
+                                    //@RequestParam("diseases") String diseases,
+                                    @RequestParam("isIll") String isIll,
+                                    @RequestParam("additionalNotes") String additionalNotes,
+                                    @RequestParam("photos") MultipartFile[] photos) throws IOException, ParseException {
         petService.createPet(new Pet(name, convertDate(takeInDate), species,
                 sex, Integer.valueOf(age), canLiveWithOtherDogs,
-                canLiveWithOtherCats, canLiveWithKids, Integer.valueOf(activity), coat, fur, convertDiseases(diseases)), convertPhotos(photos));
+                canLiveWithOtherCats, canLiveWithKids, Integer.valueOf(activity), coat, fur, /*convertDiseases(diseases)),*/isIll, additionalNotes), convertPhotos(photos));
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -74,8 +76,8 @@ public class PetController {
     }
 
     @DeleteMapping(value = "/pet")
-    public void  deletePet(@RequestParam String ids) {
-       petService.deletePets(convertToArray(ids));
+    public void deletePet(@RequestParam String ids) {
+        petService.deletePets(convertToArray(ids));
     }
 
     @GetMapping(value = "/disease")
@@ -99,11 +101,11 @@ public class PetController {
     }
 
     @PostMapping(value = "/findPet")
-    public List<PetDto> findPet(@RequestBody FindPetFormDto findPetFormDTO){
+    public List<PetDto> findPet(@RequestBody FindPetFormDto findPetFormDTO) {
         return petService.findPet(findPetFormDTO);
     }
 
-    private List<Disease> convertDiseases(String diseasesString) {
+    /*private List<Disease> convertDiseases(String diseasesString) {
         List<Disease> diseases = new ArrayList<>();
         String[] splittedDiseases = diseasesString.split(",");
         for (int i = 0; i < splittedDiseases.length; i += 2) {
@@ -111,12 +113,12 @@ public class PetController {
             diseases.add(petService.readDisease(id));
         }
         return diseases;
-    }
+    }*/
 
     private Date convertDate(String dateString) throws ParseException {
-        String[] splittedDate = dateString.split("T");
-        String joinedDate = String.join(" ", splittedDate);
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(joinedDate);
+/*        String[] splittedDate = dateString.split("T");
+        String joinedDate = String.join(" ", splittedDate);*/
+        return new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
     }
 
     private List<Photo> convertPhotos(MultipartFile[] multipartFileList) throws IOException {
@@ -127,11 +129,12 @@ public class PetController {
         }
         return photos;
     }
-    private List<Long> convertToArray(String idsString){
+
+    private List<Long> convertToArray(String idsString) {
         List<Long> ids = new ArrayList<>();
-        String [] splitted = idsString.substring(1,idsString.length()-1).split(",");
-        for (String id:splitted
-             ) {
+        String[] splitted = idsString.substring(1, idsString.length() - 1).split(",");
+        for (String id : splitted
+        ) {
             ids.add(Long.valueOf(id));
         }
         return ids;

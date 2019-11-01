@@ -41,11 +41,11 @@ public class Pet {
     private String canLiveWithKids;
 
     @Column(name = "activity")
-    private Integer activity;     // activity in scale 1-10
+    private Integer activity;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    /*@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "pet_diseases", joinColumns = @JoinColumn(name = "pet_id"), inverseJoinColumns = @JoinColumn(name = "disease_id"))
-    private List<Disease> diseases;
+    private List<Disease> diseases;*/
 
     @Column(name = "coat")
     private String coat;
@@ -53,10 +53,16 @@ public class Pet {
     @Column(name = "fur")
     private String fur;
 
+    @Column(name = "is_ill")
+    private String isIll;
+
+    @Column(name = "additional_notes")
+    private String additionalNotes;
+
     Pet() {
     }
 
-    public Pet(String name, Date takeInDate, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, String coat, String fur, List<Disease> diseases) {
+    public Pet(String name, Date takeInDate, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, String coat, String fur, String isIll, String additionalNotes/*, List<Disease> diseases*/) {
         this.name = name;
         this.takeInDate = takeInDate;
         this.lastChanged = new Date();
@@ -69,7 +75,9 @@ public class Pet {
         this.activity = activity;
         this.coat = coat;
         this.fur = fur;
-        this.diseases = diseases;
+        this.additionalNotes = additionalNotes;
+        this.isIll = isIll;
+        //this.diseases = diseases;
     }
 
 
@@ -86,7 +94,7 @@ public class Pet {
     }
 
     public String getTakeInDate() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return simpleDateFormat.format(this.takeInDate);
     }
 
@@ -151,14 +159,6 @@ public class Pet {
         this.activity = activity;
     }
 
-    public List<Disease> getDiseases() {
-        return diseases;
-    }
-
-    public void setDiseases(List<Disease> diseases) {
-        this.diseases = diseases;
-    }
-
     public String getSpecies() {
         return this.species;
     }
@@ -181,5 +181,21 @@ public class Pet {
 
     public void setFur(String fur) {
         this.fur = fur;
+    }
+
+    public String getAdditionalNotes() {
+        return additionalNotes;
+    }
+
+    public String getIsIll() {
+        return isIll;
+    }
+
+    public void setIsIll(String isIll) {
+        this.isIll = isIll;
+    }
+
+    public void setAdditionalNotes(String additionalNotes) {
+        this.additionalNotes = additionalNotes;
     }
 }

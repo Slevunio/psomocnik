@@ -59,6 +59,16 @@ public class UserController {
         return userService.readRoleByRoleName(name);
     }
 
+    @GetMapping(value="/checkUsernameExists")
+    public Boolean checkUsernameExists(@RequestParam String username){
+        if(userService.findByUsername(username) == null){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
     private List<Long> convertToArray(String idsString){
         List<Long> ids = new ArrayList<>();
         String [] splitted = idsString.substring(1,idsString.length()-1).split(",");

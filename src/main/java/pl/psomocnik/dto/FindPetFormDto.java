@@ -10,9 +10,11 @@ public class FindPetFormDto {
     private String activity;
     private String coat;
     private String fur;
-    private String diseases;
+    private String isIll;
+    private String additionalNotes;
+    //private String diseases;
 
-    public FindPetFormDto(String species, String sex, String age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, String activity, String coat, String fur, String diseases) {
+    public FindPetFormDto(String species, String sex, String age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, String activity, String coat, String fur/*, String diseases*/, String isIll, String additionalNotes) {
         this.species = species;
         this.sex = sex;
         this.age = age;
@@ -22,7 +24,9 @@ public class FindPetFormDto {
         this.activity = activity;
         this.coat = coat;
         this.fur = fur;
-        this.diseases = diseases;
+        //this.diseases = diseases;
+        this.isIll = isIll;
+        this.additionalNotes = additionalNotes;
     }
 
     public String getSpecies() {
@@ -97,11 +101,27 @@ public class FindPetFormDto {
         this.fur = fur;
     }
 
-    public String getDiseases() {
+   /* public String getDiseases() {
         return diseases;
     }
 
     public void setDiseases(String diseases) {
         this.diseases = diseases;
+    }*/
+
+    public String getIsIll() {
+        return isIll;
+    }
+
+    public void setIsIll(String isIll) {
+        this.isIll = isIll;
+    }
+
+    public String getAdditionalNotes() {
+        return additionalNotes;
+    }
+
+    public void setAdditionalNotes(String additionalNotes) {
+        this.additionalNotes = additionalNotes;
     }
 }

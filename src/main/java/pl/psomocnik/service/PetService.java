@@ -132,10 +132,10 @@ public class PetService {
                 if (findPetFormDTO.getFur().equals(pet.getFur())) {
                     matchWithUserAccuracy++;
                 }
-                if (findPetFormDTO.getDiseases().toLowerCase().equals("yes") && !pet.getDiseases().isEmpty()
+                /*if (findPetFormDTO.getDiseases().toLowerCase().equals("yes") && !pet.getDiseases().isEmpty()
                         || findPetFormDTO.getDiseases().toLowerCase().equals("no") && pet.getDiseases().isEmpty()) {
                     matchWithUserAccuracy++;
-                }
+                }*/
 
                 petDTO = copyPetToPetDTO(pet);
                 petDTO.setMatchWithUserAccuracy(matchWithUserAccuracy / PetDto.featuresToMatch * 100);
@@ -188,7 +188,7 @@ public class PetService {
         PetDto petDTO = new PetDto(pet.getId(), pet.getName(), pet.getTakeInDate(), pet.getLastChanged(),
                 pet.getSpecies(), pet.getSex(), pet.getAge(),
                 pet.getCanLiveWithOtherDogs(), pet.getCanLiveWithOtherCats(), pet.getCanLiveWithKids(),
-                pet.getActivity(), pet.getDiseases(), readPhotosIdsByPetId(pet.getId()), pet.getCoat(), pet.getFur());
+                pet.getActivity(), /*pet.getDiseases(),*/ readPhotosIdsByPetId(pet.getId()), pet.getCoat(), pet.getFur(),pet.getIsIll(), pet.getAdditionalNotes());
         return petDTO;
     }
 

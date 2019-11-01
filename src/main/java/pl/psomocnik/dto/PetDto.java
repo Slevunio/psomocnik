@@ -19,13 +19,15 @@ public class PetDto {
     private String canLiveWithOtherCats;
     private String canLiveWithKids;
     private Integer activity;
-    private List<String> diseases;
+   // private List<String> diseases;
     private List<String> photosUrls;
     private String coat;
     private String fur;
+    private String isIll;
+    private String additionalNotes;
     private Double matchWithUserAccuracy;
 
-    public PetDto(Long id, String name, String takeInDate, String lastChanged, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, List<Disease> diseases, List<Long> photosIds, String coat, String fur) {
+    public PetDto(Long id, String name, String takeInDate, String lastChanged, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, /*List<Disease> diseases,*/ List<Long> photosIds, String coat, String fur, String isIll, String additionalNotes) {
         this.id = id;
         this.name = name;
         this.takeInDate = takeInDate;
@@ -37,10 +39,12 @@ public class PetDto {
         this.canLiveWithOtherCats = canLiveWithOtherCats;
         this.canLiveWithKids = canLiveWithKids;
         this.activity = activity;
-        this.diseases = convertDiseases(diseases);
+       // this.diseases = convertDiseases(diseases);
         this.photosUrls = convertPhotoUrls(photosIds);
         this.coat = coat;
         this.fur = fur;
+        this.isIll = isIll;
+        this.additionalNotes = additionalNotes;
         this.matchWithUserAccuracy = 0.0;
     }
 
@@ -134,13 +138,13 @@ public class PetDto {
         this.activity = activity;
     }
 
-    public List<String> getDiseases() {
+   /* public List<String> getDiseases() {
         return diseases;
     }
 
     public void setDiseases(List<String> diseases) {
         this.diseases = diseases;
-    }
+    }*/
 
     public List<String> getPhotosUrls() {
         return photosUrls;
@@ -165,6 +169,22 @@ public class PetDto {
 
     public void setFur(String fur) {
         this.fur = fur;
+    }
+
+    public String getIsIll() {
+        return isIll;
+    }
+
+    public void setIsIll(String isIll) {
+        this.isIll = isIll;
+    }
+
+    public String getAdditionalNotes() {
+        return additionalNotes;
+    }
+
+    public void setAdditionalNotes(String additionalNotes) {
+        this.additionalNotes = additionalNotes;
     }
 
     public Double getMatchWithUserAccuracy() {
