@@ -69,6 +69,15 @@ public class UserController {
         }
     }
 
+    @GetMapping(value="/checkEmailExists")
+    public Boolean checkEmailExists(@RequestParam String email){
+        if(userService.findByEmail(email) == null){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
     private List<Long> convertToArray(String idsString){
         List<Long> ids = new ArrayList<>();
         String [] splitted = idsString.substring(1,idsString.length()-1).split(",");

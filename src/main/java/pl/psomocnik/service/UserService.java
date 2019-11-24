@@ -70,6 +70,10 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
+    public User findByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
+
     public List<Role> readRoles() {
         List<Role> roles = new ArrayList<>();
         roleRepository.findAll().forEach(roles::add);

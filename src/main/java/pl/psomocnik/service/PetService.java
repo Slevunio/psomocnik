@@ -1,6 +1,5 @@
 package pl.psomocnik.service;
 
-import javassist.bytecode.ByteArray;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -47,8 +46,7 @@ public class PetService {
         return copyPetToPetDTO(petRepository.findById(id).get());
     }
 
-    public void deletePets(List<Long> ids) {
-        List<Pet> pets = new ArrayList<>();
+    public void deletePets(List<Long> ids) {        
         for (Long id : ids
         ) {
             List<Photo> photos = new ArrayList<>();
@@ -111,8 +109,27 @@ public class PetService {
                 if (findPetFormDTO.getSex().equals(pet.getSex())) {
                     matchWithUserAccuracy++;
                 }
-                if (findPetFormDTO.getAge().toLowerCase().equals("yes") && pet.getAge() >= 7 || findPetFormDTO.getAge().toLowerCase().equals("no") && pet.getAge() < 7) {
-                    matchWithUserAccuracy++;
+                if (findPetFormDTO.getSpecies().equals("Pies")) {
+                    if(findPetFormDTO.getAge().equals("Dziecko pies") && pet.getAge()<2){
+                        matchWithUserAccuracy++;
+                    }
+                    else if(findPetFormDTO.getAge().equals("Pies") && (pet.getAge() >=2 && pet.getAge() < 8)){
+                        matchWithUserAccuracy++;
+                    }
+                    else if(findPetFormDTO.getAge().equals("Pan/Pani pies") && pet.getAge()>=8){
+                        matchWithUserAccuracy++;
+                    }
+                }
+                else if (findPetFormDTO.getSpecies().equals("Kot")) {
+                    if(findPetFormDTO.getAge().equals("Dziecko kot") && pet.getAge()<2){
+                        matchWithUserAccuracy++;
+                    }
+                    else if(findPetFormDTO.getAge().equals("Kot") && (pet.getAge() >=2 && pet.getAge() < 8)){
+                        matchWithUserAccuracy++;
+                    }
+                    else if(findPetFormDTO.getAge().equals("Pan/Pani kot") && pet.getAge()>=8){
+                        matchWithUserAccuracy++;
+                    }
                 }
                 if (findPetFormDTO.getCanLiveWithOtherDogs().toLowerCase().equals(pet.getCanLiveWithOtherDogs().toLowerCase())) {
                     matchWithUserAccuracy++;
@@ -123,7 +140,7 @@ public class PetService {
                 if (findPetFormDTO.getCanLiveWithKids().toLowerCase().equals(pet.getCanLiveWithKids().toLowerCase())) {
                     matchWithUserAccuracy++;
                 }
-                if (Math.abs(Integer.valueOf(findPetFormDTO.getActivity()) - pet.getActivity()) <= 2) {
+                if (findPetFormDTO.getActivity().equals(">7") && pet.getActivity() > 7 || Math.abs(Integer.valueOf(findPetFormDTO.getActivity()) - pet.getActivity()) < 2) {
                     matchWithUserAccuracy++;
                 }
                 if (findPetFormDTO.getCoat().equals(pet.getCoat())) {
@@ -132,13 +149,12 @@ public class PetService {
                 if (findPetFormDTO.getFur().equals(pet.getFur())) {
                     matchWithUserAccuracy++;
                 }
-                /*if (findPetFormDTO.getDiseases().toLowerCase().equals("yes") && !pet.getDiseases().isEmpty()
-                        || findPetFormDTO.getDiseases().toLowerCase().equals("no") && pet.getDiseases().isEmpty()) {
+                if(findPetFormDTO.getIsIll().equals(pet.getIsIll())){
                     matchWithUserAccuracy++;
-                }*/
+                }
 
                 petDTO = copyPetToPetDTO(pet);
-                petDTO.setMatchWithUserAccuracy(matchWithUserAccuracy / PetDto.featuresToMatch * 100);
+                petDTO.setMatchWithUserAccuracy(Math.round(matchWithUserAccuracy / PetDto.featuresToMatch * 100));
                 matchedPets.add(petDTO);
             }
 

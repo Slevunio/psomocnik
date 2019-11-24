@@ -7,7 +7,7 @@ import java.util.List;
 
 public class PetDto {
 
-    public static Double featuresToMatch = 10.0;
+    public static Double featuresToMatch = 9.0;
     private Long id;
     private String name;
     private String takeInDate;
@@ -19,13 +19,12 @@ public class PetDto {
     private String canLiveWithOtherCats;
     private String canLiveWithKids;
     private Integer activity;
-   // private List<String> diseases;
     private List<String> photosUrls;
     private String coat;
     private String fur;
     private String isIll;
     private String additionalNotes;
-    private Double matchWithUserAccuracy;
+    private Long matchWithUserAccuracy;
 
     public PetDto(Long id, String name, String takeInDate, String lastChanged, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, /*List<Disease> diseases,*/ List<Long> photosIds, String coat, String fur, String isIll, String additionalNotes) {
         this.id = id;
@@ -45,7 +44,7 @@ public class PetDto {
         this.fur = fur;
         this.isIll = isIll;
         this.additionalNotes = additionalNotes;
-        this.matchWithUserAccuracy = 0.0;
+        this.matchWithUserAccuracy = 0L;
     }
 
 
@@ -187,11 +186,11 @@ public class PetDto {
         this.additionalNotes = additionalNotes;
     }
 
-    public Double getMatchWithUserAccuracy() {
+    public Long getMatchWithUserAccuracy() {
         return matchWithUserAccuracy;
     }
 
-    public void setMatchWithUserAccuracy(Double matchWithUserAccuracy) {
+    public void setMatchWithUserAccuracy(Long matchWithUserAccuracy) {
         this.matchWithUserAccuracy = matchWithUserAccuracy;
     }
 

@@ -19,7 +19,7 @@ public class User {
     private String username;
 
     @Column(name = "password")
-    @JsonIgnore
+  //  @JsonIgnore
     private String password;
 
     @Column(name = "email")
