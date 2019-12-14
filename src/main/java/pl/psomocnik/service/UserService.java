@@ -33,12 +33,12 @@ public class UserService {
         return users;
     }
 
-    public User readUser(Long id) {
+    public User readUser(Long id) {        
         return userRepository.findById(id).get();
     }
 
-    public User updateUser(Long id, User user) {
-        User userToUpdate = userRepository.findById(id).get();
+    public User updateUser(User user) {
+        User userToUpdate = userRepository.findById(user.getId()).get();
         userToUpdate.setUsername(user.getUsername());
         userToUpdate.setEmail(user.getEmail());
         userToUpdate.setRole(user.getRole());

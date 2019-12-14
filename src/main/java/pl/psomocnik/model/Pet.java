@@ -1,6 +1,7 @@
 package pl.psomocnik.model;
 
 import javax.persistence.*;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -42,10 +43,6 @@ public class Pet {
     @Column(name = "activity")
     private Integer activity;
 
-    /*@ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "pet_diseases", joinColumns = @JoinColumn(name = "pet_id"), inverseJoinColumns = @JoinColumn(name = "disease_id"))
-    private List<Disease> diseases;*/
-
     @Column(name = "coat")
     private String coat;
 
@@ -61,7 +58,10 @@ public class Pet {
     Pet() {
     }
 
-    public Pet(String name, Date takeInDate, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, String coat, String fur, String isIll, String additionalNotes/*, List<Disease> diseases*/) {
+    public Pet(Long id, String name, Date takeInDate, String species, String sex, Integer age,
+            String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity,
+            String coat, String fur, String isIll, String additionalNotes) {
+        this.id = id;
         this.name = name;
         this.takeInDate = takeInDate;
         this.lastChanged = new Date();
@@ -76,12 +76,33 @@ public class Pet {
         this.fur = fur;
         this.additionalNotes = additionalNotes;
         this.isIll = isIll;
-        //this.diseases = diseases;
     }
 
+    public Pet(String name, Date takeInDate, String species, String sex, Integer age,
+            String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity,
+            String coat, String fur, String isIll, String additionalNotes) {
+        this.name = name;
+        this.takeInDate = takeInDate;
+        this.lastChanged = new Date();
+        this.species = species;
+        this.sex = sex;
+        this.age = age;
+        this.canLiveWithOtherDogs = canLiveWithOtherDogs;
+        this.canLiveWithOtherCats = canLiveWithOtherCats;
+        this.canLiveWithKids = canLiveWithKids;
+        this.activity = activity;
+        this.coat = coat;
+        this.fur = fur;
+        this.additionalNotes = additionalNotes;
+        this.isIll = isIll;
+    }
 
     public Long getId() {
         return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

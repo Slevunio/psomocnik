@@ -1,9 +1,8 @@
 package pl.psomocnik.dto;
 
-import pl.psomocnik.model.Disease;
 
-import java.util.ArrayList;
 import java.util.List;
+
 
 public class PetDto {
 
@@ -13,7 +12,7 @@ public class PetDto {
     private String takeInDate;
     private String lastChanged;
     private String species;
-    private String sex; //enum
+    private String sex;
     private Integer age;
     private String canLiveWithOtherDogs;
     private String canLiveWithOtherCats;
@@ -26,7 +25,8 @@ public class PetDto {
     private String additionalNotes;
     private Long matchWithUserAccuracy;
 
-    public PetDto(Long id, String name, String takeInDate, String lastChanged, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, /*List<Disease> diseases,*/ List<Long> photosIds, String coat, String fur, String isIll, String additionalNotes) {
+    public PetDto(){}
+    public PetDto(Long id, String name, String takeInDate, String lastChanged, String species, String sex, Integer age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, Integer activity, List<String> photosUrls, String coat, String fur, String isIll, String additionalNotes, Long matchWithUserAccuracy) {
         this.id = id;
         this.name = name;
         this.takeInDate = takeInDate;
@@ -38,16 +38,13 @@ public class PetDto {
         this.canLiveWithOtherCats = canLiveWithOtherCats;
         this.canLiveWithKids = canLiveWithKids;
         this.activity = activity;
-       // this.diseases = convertDiseases(diseases);
-        this.photosUrls = convertPhotoUrls(photosIds);
+        this.photosUrls = photosUrls;
         this.coat = coat;
         this.fur = fur;
         this.isIll = isIll;
         this.additionalNotes = additionalNotes;
         this.matchWithUserAccuracy = 0L;
     }
-
-
 
     public Long getId() {
         return id;
@@ -137,20 +134,12 @@ public class PetDto {
         this.activity = activity;
     }
 
-   /* public List<String> getDiseases() {
-        return diseases;
-    }
-
-    public void setDiseases(List<String> diseases) {
-        this.diseases = diseases;
-    }*/
-
     public List<String> getPhotosUrls() {
         return photosUrls;
     }
 
-    public void setPhotosUrls(List<Long> photosIds) {
-        this.photosUrls = convertPhotoUrls(photosIds);
+    public void setPhotosUrls(List<String> photosUrls) {
+        this.photosUrls = photosUrls;
     }
 
 
@@ -194,22 +183,5 @@ public class PetDto {
         this.matchWithUserAccuracy = matchWithUserAccuracy;
     }
 
-    private List<String> convertPhotoUrls(List<Long> photosIds) {
-        List<String> photosUrls = new ArrayList<>();
-        for (Long photoId:photosIds
-        ) {
-            photosUrls.add("/api/photos/"+photoId);
-        }
-        return photosUrls;
-    }
 
-
-    private List<String> convertDiseases(List<Disease> diseases) {
-        List<String> convertedDiseases = new ArrayList<>();
-        for (Disease dis : diseases
-        ) {
-            convertedDiseases.add(dis.getName());
-        }
-        return convertedDiseases;
-    }
 }

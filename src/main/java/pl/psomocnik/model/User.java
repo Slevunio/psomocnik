@@ -1,5 +1,6 @@
 package pl.psomocnik.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -30,9 +31,11 @@ public class User {
     private Role role;
 
     @Column(name = "created")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date created;
 
     @Column(name = "last_changed")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date lastChanged;
 
    /* @Column(name = "last_logged_in")

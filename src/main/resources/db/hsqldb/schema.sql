@@ -1,7 +1,6 @@
 DROP TABLE roles IF EXISTS;
 DROP TABLE users IF EXISTS;
 DROP TABLE pets IF EXISTS;
-DROP TABLE diseases IF EXISTS;
 DROP TABLE pet_diseases IF EXISTS;
 DROP TABLE photos IF EXISTS;
 
@@ -37,20 +36,6 @@ CREATE TABLE pets (
     is_ill varchar(30),
     additional_notes longvarchar
 );
-
-CREATE TABLE diseases (
-    id INTEGER IDENTITY PRIMARY KEY,
-    disease_name varchar(30)
-
-);
-
-CREATE TABLE pet_diseases (
-    pet_id INTEGER NOT NULL,
-    disease_id INTEGER NOT NULL
-);
-
-ALTER TABLE pet_diseases ADD CONSTRAINT fk_pet_diseases_pet FOREIGN KEY (pet_id) REFERENCES pets (id);
-ALTER TABLE pet_diseases ADD CONSTRAINT fk_pet_diseases_diseases FOREIGN KEY (disease_id) REFERENCES diseases (id);
 
 CREATE TABLE photos (
     id INTEGER IDENTITY PRIMARY KEY,

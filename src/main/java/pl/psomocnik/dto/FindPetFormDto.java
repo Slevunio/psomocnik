@@ -12,7 +12,6 @@ public class FindPetFormDto {
     private String fur;
     private String isIll;
     private String additionalNotes;
-    //private String diseases;
 
     public FindPetFormDto(String species, String sex, String age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, String activity, String coat, String fur/*, String diseases*/, String isIll, String additionalNotes) {
         this.species = species;
@@ -24,7 +23,6 @@ public class FindPetFormDto {
         this.activity = activity;
         this.coat = coat;
         this.fur = fur;
-        //this.diseases = diseases;
         this.isIll = isIll;
         this.additionalNotes = additionalNotes;
     }
@@ -100,14 +98,6 @@ public class FindPetFormDto {
     public void setFur(String fur) {
         this.fur = fur;
     }
-
-   /* public String getDiseases() {
-        return diseases;
-    }
-
-    public void setDiseases(String diseases) {
-        this.diseases = diseases;
-    }*/
 
     public String getIsIll() {
         return isIll;

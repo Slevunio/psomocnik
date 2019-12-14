@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @RestController
 
 @RequestMapping("/api")
@@ -36,43 +38,35 @@ public class PetController {
         return petService.readPets();
     }
 
-    /*@GetMapping(value = "/photos/{id}")
-    public List<Photo> readPhotosByPetId(Long id){
-        return petService.readPhotosByPetId(id);
-    }*/
-
+    /*
+     * @GetMapping(value = "/photos/{id}") public List<Photo> readPhotosByPetId(Long
+     * id){ return petService.readPhotosByPetId(id); }
+     */
 
     @GetMapping(value = "/pet/{id}")
     public PetDto readPet(@PathVariable Long id) {
         return petService.readPet(id);
     }
 
-
     @PostMapping(value = "/pet")
-    public ResponseEntity createPet(@RequestParam("name") String name,
-                                    @RequestParam("takeInDate") String takeInDate,
-                                    @RequestParam("species") String species,
-                                    @RequestParam("sex") String sex,
-                                    @RequestParam("age") String age,
-                                    @RequestParam("canLiveWithOtherDogs") String canLiveWithOtherDogs,
-                                    @RequestParam("canLiveWithOtherCats") String canLiveWithOtherCats,
-                                    @RequestParam("canLiveWithKids") String canLiveWithKids,
-                                    @RequestParam("activity") String activity,
-                                    @RequestParam("coat") String coat,
-                                    @RequestParam("fur") String fur,
-                                    //@RequestParam("diseases") String diseases,
-                                    @RequestParam("isIll") String isIll,
-                                    @RequestParam("additionalNotes") String additionalNotes,
-                                    @RequestParam("photos") MultipartFile[] photos) throws IOException, ParseException {
-        petService.createPet(new Pet(name, convertDate(takeInDate), species,
-                sex, Integer.valueOf(age), canLiveWithOtherDogs,
-                canLiveWithOtherCats, canLiveWithKids, Integer.valueOf(activity), coat, fur, /*convertDiseases(diseases)),*/isIll, additionalNotes), convertPhotos(photos));
-        return new ResponseEntity(HttpStatus.OK);
+    public void createPet(@RequestParam("name") String name, @RequestParam("takeInDate") String takeInDate,
+            @RequestParam("species") String species, @RequestParam("sex") String sex, @RequestParam("age") String age,
+            @RequestParam("canLiveWithOtherDogs") String canLiveWithOtherDogs,
+            @RequestParam("canLiveWithOtherCats") String canLiveWithOtherCats,
+            @RequestParam("canLiveWithKids") String canLiveWithKids, @RequestParam("activity") String activity,
+            @RequestParam("coat") String coat, @RequestParam("fur") String fur, @RequestParam("isIll") String isIll,
+            @RequestParam("additionalNotes") String additionalNotes, @RequestParam("photos") MultipartFile[] photos)
+            throws IOException, ParseException {
+        petService.createPet(new Pet(name, convertDate(takeInDate), species, sex, Integer.valueOf(age),
+                canLiveWithOtherDogs, canLiveWithOtherCats, canLiveWithKids, Integer.valueOf(activity), coat, fur,
+                isIll, additionalNotes), convertPhotos(photos));
     }
 
     @PutMapping(value = "/pet/{id}")
-    public Pet updatePet(@PathVariable Long id, @RequestBody Pet pet) {
-        return petService.updatePet(id, pet);
+    public void updatePet(@RequestParam("pet") String petJsonString,
+            @RequestParam("addedPhotos") MultipartFile[] photos) throws IOException, ParseException {
+        PetDto petDto = new ObjectMapper().readValue(petJsonString, PetDto.class);
+        petService.updatePet(petDto, convertPhotos(photos));
     }
 
     @DeleteMapping(value = "/pet")
@@ -105,19 +99,19 @@ public class PetController {
         return petService.findPet(findPetFormDTO);
     }
 
-    /*private List<Disease> convertDiseases(String diseasesString) {
-        List<Disease> diseases = new ArrayList<>();
-        String[] splittedDiseases = diseasesString.split(",");
-        for (int i = 0; i < splittedDiseases.length; i += 2) {
-            Long id = Long.valueOf(splittedDiseases[i].split(":")[1]);
-            diseases.add(petService.readDisease(id));
-        }
-        return diseases;
-    }*/
+    /*
+     * private List<Disease> convertDiseases(String diseasesString) { List<Disease>
+     * diseases = new ArrayList<>(); String[] splittedDiseases =
+     * diseasesString.split(","); for (int i = 0; i < splittedDiseases.length; i +=
+     * 2) { Long id = Long.valueOf(splittedDiseases[i].split(":")[1]);
+     * diseases.add(petService.readDisease(id)); } return diseases; }
+     */
 
     private Date convertDate(String dateString) throws ParseException {
-/*        String[] splittedDate = dateString.split("T");
-        String joinedDate = String.join(" ", splittedDate);*/
+        /*
+         * String[] splittedDate = dateString.split("T"); String joinedDate =
+         * String.join(" ", splittedDate);
+         */
         return new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
     }
 
@@ -125,7 +119,8 @@ public class PetController {
         List<Photo> photos = new ArrayList<>();
 
         for (int i = 0; i < multipartFileList.length; i++) {
-            photos.add(new Photo(multipartFileList[i].getOriginalFilename(), multipartFileList[i].getContentType(), multipartFileList[i].getBytes()));
+            photos.add(new Photo(multipartFileList[i].getOriginalFilename(), multipartFileList[i].getContentType(),
+                    multipartFileList[i].getBytes()));
         }
         return photos;
     }
@@ -133,8 +128,7 @@ public class PetController {
     private List<Long> convertToArray(String idsString) {
         List<Long> ids = new ArrayList<>();
         String[] splitted = idsString.substring(1, idsString.length() - 1).split(",");
-        for (String id : splitted
-        ) {
+        for (String id : splitted) {
             ids.add(Long.valueOf(id));
         }
         return ids;
