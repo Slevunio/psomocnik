@@ -13,7 +13,7 @@ public class FindPetFormDto {
     private String isIll;
     private String additionalNotes;
 
-    public FindPetFormDto(String species, String sex, String age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, String activity, String coat, String fur/*, String diseases*/, String isIll, String additionalNotes) {
+    public FindPetFormDto(String species, String sex, String age, String canLiveWithOtherDogs, String canLiveWithOtherCats, String canLiveWithKids, String activity, String coat, String fur, String isIll, String additionalNotes) {
         this.species = species;
         this.sex = sex;
         this.age = age;

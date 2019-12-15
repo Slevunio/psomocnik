@@ -1,24 +1,19 @@
 package pl.psomocnik.controller;
 
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 import pl.psomocnik.dto.FindPetFormDto;
 import pl.psomocnik.dto.PetDto;
-import pl.psomocnik.model.Disease;
 import pl.psomocnik.model.Photo;
 import pl.psomocnik.service.PetService;
 import pl.psomocnik.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Console;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,11 +32,6 @@ public class PetController {
     public List<PetDto> readPets() {
         return petService.readPets();
     }
-
-    /*
-     * @GetMapping(value = "/photos/{id}") public List<Photo> readPhotosByPetId(Long
-     * id){ return petService.readPhotosByPetId(id); }
-     */
 
     @GetMapping(value = "/pet/{id}")
     public PetDto readPet(@PathVariable Long id) {
@@ -74,21 +64,6 @@ public class PetController {
         petService.deletePets(convertToArray(ids));
     }
 
-    @GetMapping(value = "/disease")
-    public List<Disease> readDiseases() {
-        return petService.readDiseases();
-    }
-
-    @PostMapping(value = "/disease")
-    public Disease createDisease(@RequestBody Disease disease) {
-        return petService.createDisease(disease);
-    }
-
-    @DeleteMapping(value = "/disease/{id}")
-    public void deleteDisease(@PathVariable Long id) {
-        petService.deleteDisease(id);
-    }
-
     @GetMapping(value = "/photos/{id}")
     public ResponseEntity<Resource> readPhoto(@PathVariable Long id) throws IOException {
         return petService.readPhotoById(id);
@@ -99,19 +74,7 @@ public class PetController {
         return petService.findPet(findPetFormDTO);
     }
 
-    /*
-     * private List<Disease> convertDiseases(String diseasesString) { List<Disease>
-     * diseases = new ArrayList<>(); String[] splittedDiseases =
-     * diseasesString.split(","); for (int i = 0; i < splittedDiseases.length; i +=
-     * 2) { Long id = Long.valueOf(splittedDiseases[i].split(":")[1]);
-     * diseases.add(petService.readDisease(id)); } return diseases; }
-     */
-
     private Date convertDate(String dateString) throws ParseException {
-        /*
-         * String[] splittedDate = dateString.split("T"); String joinedDate =
-         * String.join(" ", splittedDate);
-         */
         return new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
     }
 

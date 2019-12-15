@@ -7,10 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import pl.psomocnik.dto.FindPetFormDto;
 import pl.psomocnik.dto.PetDto;
-import pl.psomocnik.dao.DiseaseRepository;
 import pl.psomocnik.dao.PetRepository;
 import pl.psomocnik.dao.PhotosRepository;
-import pl.psomocnik.model.Disease;
 import pl.psomocnik.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,8 +27,7 @@ import java.util.List;
 public class PetService {
     @Autowired
     PetRepository petRepository;
-    @Autowired
-    DiseaseRepository diseaseRepository;
+
     @Autowired
     PhotosRepository photosRepository;
 
@@ -168,24 +165,6 @@ public class PetService {
             }
         });
         return matchedPets;
-    }
-
-    public List<Disease> readDiseases() {
-        List<Disease> diseases = new ArrayList<>();
-        diseaseRepository.findAll().forEach(diseases::add);
-        return diseases;
-    }
-
-    public Disease readDisease(Long id) {
-        return diseaseRepository.findById(id).get();
-    }
-
-    public Disease createDisease(Disease disease) {
-        return diseaseRepository.save(disease);
-    }
-
-    public void deleteDisease(Long id) {
-        diseaseRepository.deleteById(id);
     }
 
     public List<Long> readPhotosIdsByPetId(Long id) {
