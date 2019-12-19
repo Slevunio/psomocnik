@@ -1,5 +1,5 @@
-INSERT INTO roles values (1, 'ADMIN');
-INSERT INTO roles values (2, 'MODERATOR');
-INSERT INTO roles values (3, 'USER');
-INSERT INTO users VALUES (1, 'admin', '', 1, '$2y$12$BGyHZl47JBFlTjoRyD6dMe5kuuF8basf2n7ZGyHWiuIuZLHvN9k2q', '2019-05-01 00:00:00', '2019-05-01 00:00:00');
+INSERT INTO roles values (1, 'ADMIN') ON CONFLICT DO NOTHING;
+INSERT INTO roles values (2, 'MODERATOR') ON CONFLICT DO NOTHING;
+INSERT INTO roles values (3, 'USER') ON CONFLICT DO NOTHING;
+INSERT INTO users VALUES (1, 'admin', 'admin@email.com', 1, '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.', '2015-05-01 00:00:00', '2015-05-01 00:00:00'); ON CONFLICT DO NOTHING;
 
