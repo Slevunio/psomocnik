@@ -60,11 +60,13 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
 		</dependency>
+<!--
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+-->
 		<!--postgresql and google cloud dependencies-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -73,7 +75,7 @@
 			<type>pom</type>
 			<scope>import</scope>
 		</dependency>
-		<!--<dependency>
+		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.1.1</version>
@@ -87,7 +89,7 @@
 			<groupId>com.google.cloud.sql</groupId>
 			<artifactId>postgres-socket-factory</artifactId>
 			<version>1.0.11</version>
-		</dependency>-->
+		</dependency>
 
         <!--Spring boot pl.psomocnik.security-->
         <dependency>

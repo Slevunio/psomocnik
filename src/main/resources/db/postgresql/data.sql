@@ -1,2 +1,5 @@
-INSERT INTO users VALUES (1, 'Slevunio', 'slevunio@gmail.com', 'password', 'admin', '2019-05-01 00:00:00-07', '2019-05-01') ON CONFLICT DO NOTHING;
-INSERT INTO pets VALUES (1, 'Fafik', '2019-05-11 00:00:00', 'Pies', 'M', '3', 'Tak', 'Nie', 'Tak', '8', 'Brak') ON CONFLICT DO NOTHING;
+INSERT INTO roles values (1, 'ADMIN') ON CONFLICT DO NOTHING;
+INSERT INTO roles values (2, 'MODERATOR') ON CONFLICT DO NOTHING;
+INSERT INTO roles values (3, 'USER') ON CONFLICT DO NOTHING;
+INSERT INTO users VALUES (1, 'admin', 'admin@email.com', 1, '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.', '2015-05-01 00:00:00', '2015-05-01 00:00:00'); ON CONFLICT DO NOTHING;
+

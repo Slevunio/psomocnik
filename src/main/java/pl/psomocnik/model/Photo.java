@@ -1,7 +1,6 @@
 package pl.psomocnik.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.persistence.*;
 
@@ -20,7 +19,7 @@ public class Photo {
     @Column(name = "photo_type")
     private String type;
 
-    @Lob
+    //@Lob
     @Column(name = "photo_data")
     private byte[] data;
 
