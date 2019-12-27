@@ -69,6 +69,11 @@ public class PetController {
         return petService.readPhotoById(id);
     }
 
+    @DeleteMapping(value = "/photos")
+    public void deletePhoto(@RequestParam String id){
+        petService.deletePhoto(Long.valueOf(id));
+    }
+
     @PostMapping(value = "/findPet")
     public List<PetDto> findPet(@RequestBody FindPetFormDto findPetFormDTO) {
         return petService.findPet(findPetFormDTO);
