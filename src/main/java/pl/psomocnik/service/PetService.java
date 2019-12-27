@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -66,33 +65,14 @@ public class PetService {
     }
 
     public void updatePet(PetDto petDto, List<Photo> photos) throws ParseException {
-        /**
-         * 1. wez id zdjec z nowego petdto 2. wez id zdjec z pet do update 3. usun z
-         * bazy zdjecia, ktorych nie ma w nowym petdto
-         * 
-         */
         Pet petToUpdate = petRepository.findById(petDto.getId()).get();
-        List<Long> updatedPhotosIds = getPhotoIdsFromUrls(petDto.getPhotosUrls());
-        List<Long> orginalPhotosIds = new ArrayList<>();
-        List<Photo> orginalPhotos = new ArrayList<>();
-        photosRepository.findAllByOrderByIdAsc().forEach(orginalPhotos::add);
-        for (Photo photo : orginalPhotos) {
-            orginalPhotosIds.add(photo.getId());
-        }
-        for (int i = 0; i < updatedPhotosIds.size(); i++) {
-            if (updatedPhotosIds.get(i) != orginalPhotosIds.get(i)) {
-                photosRepository.deleteById(orginalPhotosIds.get(i));
-                orginalPhotosIds.remove(i);
-                i--;
-            }
-        }
-
         petToUpdate = this.copyPetDTOToPet(petDto);
         petRepository.save(petToUpdate);
         for (Photo photo : photos) {
             photo.setPet(petToUpdate);
             photosRepository.save(photo);
         }
+
     }
 
     public List<PetDto> findPet(FindPetFormDto findPetFormDTO) {
@@ -177,6 +157,17 @@ public class PetService {
         return photosIds;
     }
 
+    public ResponseEntity<Resource> readPhotoById(Long id) {
+        Photo photo = photosRepository.findById(id).get();
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(photo.getType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + photo.getName() + "\"")
+                .body(new ByteArrayResource(photo.getData()));
+    }
+
+    public void deletePhoto(Long id) {
+        this.photosRepository.deleteById(id);
+    }
+
     private PetDto copyPetToPetDTO(Pet pet) {
         PetDto petDTO = new PetDto(pet.getId(), pet.getName(), pet.getTakeInDate(), pet.getLastChanged(),
                 pet.getSpecies(), pet.getSex(), pet.getAge(), pet.getCanLiveWithOtherDogs(),
@@ -202,23 +193,4 @@ public class PetService {
         }
         return photosUrls;
     }
-
-    private List<Long> getPhotoIdsFromUrls(List<String> urls) {
-        List<Long> ids = new ArrayList<>();
-        for (String url : urls) {
-            ids.add(Long.parseLong(url.split("/")[3]));
-        }
-        Collections.sort(ids);
-        return ids;
-    }
-
-    public ResponseEntity<Resource> readPhotoById(Long id) {
-        Photo photo = photosRepository.findById(id).get();
-        String s = Base64.getEncoder().encodeToString(photo.getData());
-        System.out.println(s);
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(photo.getType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + photo.getName() + "\"")
-                .body(new ByteArrayResource(photo.getData()));
-    }
-
 }
