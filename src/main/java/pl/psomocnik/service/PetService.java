@@ -116,7 +116,7 @@ public class PetService {
                 if (findPetFormDTO.getCanLiveWithKids().toLowerCase().equals(pet.getCanLiveWithKids().toLowerCase())) {
                     matchWithUserAccuracy++;
                 }
-                if (findPetFormDTO.getActivity().equals(">7") && pet.getActivity() > 7
+                if (findPetFormDTO.getActivity().equals("8") && pet.getActivity() > 7
                         || Math.abs(Integer.valueOf(findPetFormDTO.getActivity()) - pet.getActivity()) < 2) {
                     matchWithUserAccuracy++;
                 }
