@@ -1,4 +1,4 @@
-# psomocnik
+# Psomocnik
 Web application supporting pet adoption
 
-Some desription
+Go to https://psomocnik-262113.appspot.com/
