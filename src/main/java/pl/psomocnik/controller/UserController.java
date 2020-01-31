@@ -30,13 +30,13 @@ public class UserController {
     }
 
     @PutMapping(path = "/user/{id}")
-    public void updateUser(@RequestBody User user) {
-        userService.updateUser(user);
+    public User updateUser(@RequestBody User user) {
+        return userService.updateUser(user);
     }
 
     @PostMapping(path = "/user")
-    public void createUser(@RequestBody User user) {
-        userService.createUser(user);
+    public User createUser(@RequestBody User user) {
+        return userService.createUser(user);
     }
 
     @DeleteMapping(path = "/user")

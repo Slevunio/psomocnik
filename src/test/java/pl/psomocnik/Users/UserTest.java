@@ -1,152 +1,125 @@
-/*package org.springframework.samples.petclinic.Users;
+package pl.psomocnik.Users;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.BeforeClass;
+import org.junit.Before;
+import org.junit.After;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
-
-
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class UserTest {
+    private static WebDriver driver;
+    private static Actions actions;
 
-    public WebDriver startWebDriver(){
-        System.setProperty("webdriver.chrome.driver","C:\\Program Files\\JetBrains\\IntelliJ IDEA Community Edition 2018.3.5\\drivers\\chromedriver.exe");
-        WebDriver driver=new ChromeDriver();
-        return driver;
+    @BeforeClass
+    public static void setup() {    
+        driver = new ChromeDriver();
+        actions = new Actions(driver);
+        driver.get("https://psomocnik-262113.appspot.com/login");
+        actions
+                .click(driver.findElement(By.id("username")))
+                .sendKeys("admin" + Keys.TAB)
+                .sendKeys("123456")
+                .click(driver.findElement(By.id("submit")))
+                .build().perform();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.findElement(By.id("home"));
     }
+    @Before
+    public void createUser() {
 
-    @Test
-    public void createUserTest(){
-        Boolean isTestUserInTable=false;
+        driver.get("https://psomocnik-262113.appspot.com/addUser");
+        actions
+                .click(driver.findElement(By.id("username")))
+                .sendKeys("Testuser" + Keys.TAB)
+                .sendKeys("Testuser@email.com").build().perform();
+        Select select = new Select(driver.findElement(By.id("roles")));
+        select.selectByVisibleText("USER");
 
-        WebDriver driver=startWebDriver();
-        driver.get("http://localhost:8080/addUser");
-        Actions actions=new Actions(driver);
-        actions.click(driver.findElement(By.id("userName"))).sendKeys("Testuser"+ Keys.TAB)
-                                                            .sendKeys("Testuser@email.com"+Keys.TAB)
-                                                            .sendKeys("user").build().perform();
-        WebElement submit=driver.findElement(By.id("submitAddUser"));
-        submit.click();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        driver.get("http://localhost:8080/manageUsers");
-        String id=getTestUserId(driver);
-        try{
-            actions.click(driver.findElement(By.id("delete"+id))).build().perform();
-            isTestUserInTable=true;
-        }
-        catch(NoSuchElementException ex){
-            isTestUserInTable=false;
-        }
-        Assert.assertTrue("Creating new user failed!",isTestUserInTable);
-        driver.close();
+        actions
+                .click(driver.findElement(By.id("password")))
+                .sendKeys("testpassword" + Keys.TAB)
+                .sendKeys("testpassword" + Keys.TAB).build().perform();
 
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("submitCreateUser")));
+        actions
+                .click(driver.findElement(By.id("submitCreateUser")))
+                .build().perform();
     }
-    @Test
-    public void deleteUserTest(){
-        boolean isTestUserInTable=true;
-        WebDriver driver=startWebDriver();
-        driver.get("http://localhost:8080/addUser");
-        Actions actions=new Actions(driver);
-        actions.click(driver.findElement(By.id("userName"))).sendKeys("Testuser"+ Keys.TAB)
-            .sendKeys("Testuser@email.com"+Keys.TAB)
-            .sendKeys("user").build().perform();
-        WebElement submit=driver.findElement(By.id("submitAddUser"));
-        submit.click();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        driver.get("http://localhost:8080/manageUsers");
-        actions.click(driver.findElement(By.id("deleteTestuser"))).build().perform();
-        try {
-            driver.findElement(By.id("deleteTestuser"));
-            isTestUserInTable=true;
-        }
-        catch(NoSuchElementException ex){
-            isTestUserInTable=false;
-        }
-        Assert.assertTrue("Deleting user failed!",isTestUserInTable);
+    @After
+    public void deleteUser(){
+        actions
+                .click(driver.findElement(By.id("deleteeditedTestuser"))).build().perform();
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("deleteButton")));
+        actions
+                .click(driver.findElement(By.id("deleteButton"))).build().perform();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("deleteSubmitButton")));
+        actions
+                .click(driver.findElement(By.id("deleteSubmitButton"))).build().perform();
         driver.close();
     }
-
     @Test
-    public void updateUserTest(){
-        WebDriver driver=startWebDriver();
-        //create TestUser
-        driver.get("http://localhost:8080/addUser");
-        Actions actions=new Actions(driver);
-        actions.click(driver.findElement(By.id("userName"))).sendKeys("Testuser"+ Keys.TAB)
-            .sendKeys("Testuser@email.com"+Keys.TAB)
-            .sendKeys("user").build().perform();
-        WebElement submit=driver.findElement(By.id("submitAddUser"));
-        submit.click();
+    public void editUserTest() {
+        actions
+            .click(driver.findElement(By.id("editTestuser"))).build().perform();
+        driver.findElement(By.id("username")).clear();
+        driver.findElement(By.id("email")).clear();
 
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        driver.get("http://localhost:8080/manageUsers");
-        String id=getTestUserId(driver);
-        actions.click(driver.findElement(By.id("edit"+id))).build().perform();
+        actions
+                .click(driver.findElement(By.id("username")))
+                .sendKeys("editedTestuser" + Keys.TAB)
+                .sendKeys("editedTestuser@email.com" + Keys.TAB)
+                .build()
+                .perform();
+        Select select = new Select(driver.findElement(By.id("roles")));
+        select.selectByVisibleText("MODERATOR");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("editUserSubmit")));
+        actions
+                .click(driver.findElement(By.id("editUserSubmit"))).build().perform();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("editUserModalSubmit")));
+        actions
+                .click(driver.findElement(By.id("editUserModalSubmit"))).build().perform();
 
-        //change username
-        actions.click(driver.findElement(By.id("editUserName"))).build().perform();
-        actions.click(driver.findElement(By.id("editInput"))).sendKeys("ChangedUserName").build().perform();
-        actions.click(driver.findElement(By.id("editInputModalSubmit"))).build().perform();
+        List<WebElement> updatedRow = getUpdatedRow("editedTestuser");
 
-        //change email
-        actions.click(driver.findElement(By.id("editEmail"))).build().perform();
-        actions.click(driver.findElement(By.id("editInput"))).sendKeys("ChangedEmail@email.com").build().perform();
-        actions.click(driver.findElement(By.id("editInputModalSubmit"))).build().perform();
-
-        //change type
-        actions.click(driver.findElement(By.id("editType"))).build().perform();
-        actions.click(driver.findElement(By.id("editInput"))).sendKeys("admin").build().perform();
-        actions.click(driver.findElement(By.id("editInputModalSubmit"))).build().perform();
-
-        //submit changes
-        actions.click(driver.findElement(By.id("editUserSubmit"))).build().perform();
-        actions.click(driver.findElement(By.id("editUserModalSubmit"))).build().perform();//auto redirect to /manageUsers
-
-        List<WebElement> updatedRow=getUpdatedRow(driver, id);
-        boolean updatedSuccesfull;
-        if(updatedRow.get(1).getText().equals("ChangedUserName")
-            && updatedRow.get(2).getText().equals("ChangedEmail@email.com")
-            && updatedRow.get(3).getText().equals("admin")){
-            updatedSuccesfull=true;
-        }
-        else{
-            updatedSuccesfull=false;
+        boolean updatedSuccessful;
+        if (updatedRow.get(2).getText().equals("editedTestuser")
+                && updatedRow.get(3).getText().equals("editedTestuser@email.com")
+                && updatedRow.get(4).getText().equals("MODERATOR")) {
+            updatedSuccessful = true;
+        } else {
+            updatedSuccessful = false;
         }
 
-        Assert.assertTrue("Updating user failed!", updatedSuccesfull);
-        actions.click(driver.findElement(By.id("deleteChangedUserName"))).build().perform();
-        driver.close();
-
+        Assert.assertTrue("Updating user failed!", updatedSuccessful);
     }
 
-    private String getTestUserId(WebDriver driver){
-        String id = "0";
+    private List<WebElement> getUpdatedRow(String username) {
         List<WebElement> columns;
-        List<WebElement> rows=driver.findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
-        for(int i=0; i<rows.size(); i++){
+        List<WebElement> updatedRow = null;
+        List<WebElement> rows = driver.findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
+        for (int i = 0; i < rows.size(); i++) {
             columns = rows.get(i).findElements(By.tagName("td"));
-            if (columns.get(1).getText().equals("Testuser")) {
-                id=columns.get(0).getText();
+            if (columns.get(2).getText().equals(username)) {
+                updatedRow = columns;
             }
         }
-        return id;
-    }
-
-    private List<WebElement> getUpdatedRow(WebDriver driver, String id){
-
-        List<WebElement> updatedRow=driver.findElement(By.id(id)).findElements(By.tagName("td"));
         return updatedRow;
     }
 
+
 }
-*/
